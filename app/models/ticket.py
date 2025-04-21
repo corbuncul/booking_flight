@@ -1,19 +1,19 @@
 from enum import StrEnum
 
-from sqlalchemy import Column, DateTime, Enum, Integer, ForeignKey, func
+from sqlalchemy import Column, DateTime, Enum, Integer, ForeignKey, func, String
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
 
 
+class PaidStatus(StrEnum):
+    PAID = 'Оплачено'
+    CANCELED = 'Отменено'
+    BOOKED = 'Забронировано'
+
+
 class Ticket(Base):
-
-    class PaidStatus(StrEnum):
-        PAID = 'Оплачено'
-        CANCELED = 'Отменено'
-        BOOKED = 'Забронировано'
-
-    number = Column(Integer)
+    number = Column(String)
     flight_id = Column(Integer, ForeignKey('flight.id'))
     passenger_id = Column(Integer, ForeignKey('passenger.id'))
     created_at = Column(DateTime, server_default=func.now())

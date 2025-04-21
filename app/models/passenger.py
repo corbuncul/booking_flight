@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, Date, String
 
 from app.core.db import Base
 
@@ -12,9 +12,9 @@ class Passenger(Base):
     surname = Column(String(NAME_MAX_LENGHT))
     phone = Column(String(PHONE_MAX_LENGHT))
     email = Column(String(NAME_MAX_LENGHT))
-    birth_date = Column(Date)
+    birthday = Column(Date)
     doc_number = Column(String(DOC_MAX_LENGHT))
-    tg_id = Column(Integer)
+    tg_id = Column(String)
 
     def __repr__(self):
         return f'{self.surname} {self.name[0]}'
