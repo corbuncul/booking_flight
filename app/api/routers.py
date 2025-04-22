@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from app.api.endpoints import (
     flight_router,
     passenger_router,
-    queue_router,
     route_router,
     ticket_router,
     google_router,
@@ -25,11 +24,6 @@ main_router.include_router(
     passenger_router,
     prefix='/passenger',
     tags=['Пассажиры'],
-)
-main_router.include_router(
-    queue_router,
-    prefix='/queue',
-    tags=['Очереди'],
 )
 main_router.include_router(
     ticket_router,

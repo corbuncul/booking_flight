@@ -6,10 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.flight import flight_crud
 from app.crud.passenger import passenger_crud
-from app.crud.queue import queue_crud
 from app.crud.route import route_crud
 from app.crud.ticket import ticket_crud
-from app.models import Flight, Passenger, Queue, Route, Ticket
+from app.models import Flight, Passenger, Route, Ticket
 
 
 async def check_flight_duplicate(
@@ -54,19 +53,6 @@ async def check_passenger_exists(
     return passenger
 
 
-async def check_queue_exists(
-    session: AsyncSession,
-    queue_id: int,
-) -> Queue:
-    """Проверка существования записи пассажира на рейс."""
-    queue = await queue_crud.get(queue_id, session)
-    if queue is None:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail='Запись не найдена!'
-        )
-    return queue
-
-
 async def check_ticket_exists(
     session: AsyncSession,
     ticket_id: int,
@@ -96,12 +82,12 @@ async def check_route_exists(
 
 async def check_route_duplicate(
     session: AsyncSession,
-    from_town: str,
-    to_town: str,
+    from_city: str,
+    to_city: str,
 ) -> None:
     """Провверка на дублирование маршрута."""
-    routes = await route_crud.get_routes_by_towns(
-        session, from_town=from_town, to_town=to_town
+    routes = await route_crud.get_routes_by_cities(
+        session, from_city=from_city, to_city=to_city
     )
     if len(routes):
         raise HTTPException(
