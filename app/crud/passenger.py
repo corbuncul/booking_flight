@@ -15,14 +15,14 @@ class CRUDPassenger(CRUDBase):
         session: AsyncSession,
         *,
         surname: str | None = None,
-        first_name: str | None = None,
+        name: str | None = None,
     ) -> list[Optional[PassengerDB]]:
         """Получение пассажиров по фамилии и имени."""
         query = select(self.model)
         if surname is not None:
             query = query.where(self.model.surname == surname)
-        if first_name is not None:
-            query = query.where(self.model.first_name == first_name)
+        if name is not None:
+            query = query.where(self.model.name == name)
         db_passenger = await session.execute(query)
         return db_passenger.scalars().all()
 

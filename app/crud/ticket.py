@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import select
@@ -20,6 +21,27 @@ class CRUDTicket(CRUDBase):
             )
         )
         return db_ticket.scalars().first()
+
+    async def get_tickets_by_flight(
+        self, session: AsyncSession, flight_id: int
+    ) -> list[Optional[TicketDB]]:
+        """Получение билетов по id полета."""
+        db_ticket = await session.execute(
+            select(self.model).where(
+                self.model.flight_id == flight_id
+            )
+        )
+        return db_ticket.scalars().all()
+    
+    async def get_tickets_by_date_flight(
+        self, session: AsyncSession, date_flight: datetime
+    ) -> list[Optional[TicketDB]]:
+        db_ticket = await session.execute(
+            select(self.model).where(
+                self.model.flight.date_flight == date_flight
+            )
+        )
+        return db_ticket.scalars().all()
 
 
 ticket_crud = CRUDTicket(Ticket)

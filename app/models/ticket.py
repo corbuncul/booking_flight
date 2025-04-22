@@ -1,6 +1,14 @@
 from enum import StrEnum
 
-from sqlalchemy import Column, DateTime, Enum, Integer, ForeignKey, func, String
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Enum,
+    Integer,
+    ForeignKey,
+    func,
+    String
+)
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
@@ -35,4 +43,7 @@ class Ticket(Base):
     )
 
     def __repr__(self):
-        return f'{self.flight.number} {self.passenger.surname} {self.passenger.name[0]}'
+        return (
+            f'{self.flight.number} {self.passenger.surname}'
+            f'{self.passenger.name[0]}'
+        )

@@ -25,20 +25,6 @@ class CRUDFlight(CRUDBase):
         )
         return db_flights.scalars().all()
 
-    async def get_flights_by_route(
-        self,
-        session: AsyncSession,
-        route: int
-    ) -> list[Optional[FlightDB]]:
-        """Получение рейсов по направлению."""
-
-        db_flights = await session.execute(
-            select(self.model).where(
-                self.model.route == route,
-            )
-        )
-        return db_flights.scalars().all()
-
     async def get_flights_by_number(
         self,
         session: AsyncSession,
@@ -74,7 +60,6 @@ class CRUDFlight(CRUDBase):
         *,
         number: str | None = None,
         date: datetime | None = None,
-        route: int | None = None,
         board_number: str | None = None
     ) -> Optional[FlightDB]:
         """Получение рейса по различным параметрам."""
@@ -83,8 +68,6 @@ class CRUDFlight(CRUDBase):
             query = query.where(self.model.number == number)
         if date is not None:
             query = query.where(self.model.date_flight == date)
-        if route is not None:
-            query = query.where(self.model.route == route)
         if board_number is not None:
             query.where(self.model.board_number == board_number)
         db_flight = await session.execute(query)
