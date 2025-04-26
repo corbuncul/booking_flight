@@ -41,7 +41,6 @@ async def get_by_parameters(
     session: AsyncSession = Depends(get_async_session),
     flight_number: str | None = None,
     date: datetime | None = None,
-    route_id: int | None = None,
     board_number: str | None = None
 ):
     "Список рейсов по параметрам."
@@ -49,7 +48,6 @@ async def get_by_parameters(
         session,
         number=flight_number,
         date=date,
-        route=route_id,
         board_number=board_number
     )
 
@@ -110,8 +108,5 @@ async def partially_update_flight(
         await check_flight_duplicate(
             session, flight.number, obj_in.date_flight
         )
-
-    if obj_in.route is not None:
-        await check_route_exists(session, obj_in.route)
 
     return await flight_crud.update(flight, obj_in, session)

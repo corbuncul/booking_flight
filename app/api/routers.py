@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.endpoints import (
+    city_router,
     flight_router,
     passenger_router,
     route_router,
@@ -10,6 +11,11 @@ from app.api.endpoints import (
 )
 
 main_router = APIRouter()
+main_router.include_router(
+    city_router,
+    prefix='/city',
+    tags=['Населенные пункты'],
+)
 main_router.include_router(
     flight_router,
     prefix='/flight',
