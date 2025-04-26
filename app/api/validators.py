@@ -4,11 +4,56 @@ from http import HTTPStatus
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.crud.city import city_crud
 from app.crud.flight import flight_crud
 from app.crud.passenger import passenger_crud
 from app.crud.route import route_crud
 from app.crud.ticket import ticket_crud
-from app.models import Flight, Passenger, Route, Ticket
+from app.models import City, Flight, Passenger, Route, Ticket
+
+
+async def check_city_exists(
+    session: AsyncSession,
+    city_id: int
+) -> City:
+    """Проверка существования населенного пункта."""
+    city = await city_crud.get(city_id, session)
+    if city is None:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail='Населенный пункт не найден!'
+        )
+    return city
+
+
+async def check_city_name_duplicate(
+    session: AsyncSession,
+    city_name: str
+) -> None:
+    """Проверка на дублирование названий населенных пунктов."""
+    city = await city_crud.get_city_by_names(
+        session=session, name=city_name
+    )
+    if city is not None:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail='Населенный пункт с таким названием уже существует!'
+        )
+
+
+async def check_city_code_duplicate(
+    session: AsyncSession,
+    city_code: str
+) -> None:
+    """Проверка на дублирование кодов населенных пунктов."""
+    city = await city_crud.get_city_by_code(
+        session=session, code=city_code
+    )
+    if city is not None:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail='Населенный пункт с таким кодом уже существует!'
+        )
 
 
 async def check_flight_duplicate(

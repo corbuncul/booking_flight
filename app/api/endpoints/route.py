@@ -58,17 +58,17 @@ async def update_route(
 ):
     """Обновление маршрута."""
     route = await check_route_exists(session, route_id)
-    if (obj_in.from_town is not None) and (obj_in.to_town is not None):
+    if (obj_in.from_city is not None) and (obj_in.to_city is not None):
         await check_route_duplicate(
-            session, from_town=obj_in.from_town, to_town=obj_in.to_town
+            session, from_city=obj_in.from_city, to_city=obj_in.to_city
         )
-    if obj_in.from_town is not None:
+    if obj_in.from_city is not None:
         await check_route_duplicate(
-            session, from_town=obj_in.from_town, to_town=route.to_town
+            session, from_city=obj_in.from_city, to_city=route.to_city
         )
-    if obj_in.to_town is not None:
+    if obj_in.to_city is not None:
         await check_route_duplicate(
-            session, from_town=route.from_town, to_town=obj_in.to_town
+            session, from_city=route.from_city, to_city=obj_in.to_city
         )
     db_route = await route_crud.update(route, obj_in, session)
     return db_route
