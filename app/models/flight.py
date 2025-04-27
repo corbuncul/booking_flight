@@ -8,9 +8,9 @@ FLIGHT_MAX_LENGHT = 10
 
 
 class Flight(Base):
-    number = Column(String(FLIGHT_MAX_LENGHT))
-    board_number = Column(String(BOARD_MAX_LENGHT))
-    date_flight = Column(DateTime)
+    number = Column(String(FLIGHT_MAX_LENGHT), nullable=False)
+    board_number = Column(String(BOARD_MAX_LENGHT), nullable=True)
+    date_flight = Column(DateTime, nullable=False)
     routes = relationship(
         'Route',
         secondary='FlightRoute',
