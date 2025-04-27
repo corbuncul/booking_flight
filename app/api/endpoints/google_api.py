@@ -9,9 +9,9 @@ from app.core.db import get_async_session
 from app.core.google_client import get_service
 from app.core.user import current_superuser
 from app.crud import (
+    city_crud,
     flight_crud,
     passenger_crud,
-    queue_crud,
     route_crud,
     ticket_crud
 )
@@ -20,9 +20,9 @@ from app.services.google_api import (
     spreadsheets_create,
     spreadsheets_update_value,
 )
+from app.schemas.city import CityDB
 from app.schemas.flight import FlightDB
 from app.schemas.passenger import PassengerDB
-from app.schemas.queue import QueueDB
 from app.schemas.route import RouteDB
 from app.schemas.ticket import TicketDB
 
@@ -113,22 +113,22 @@ async def get_routes(
     return routes
 
 
-@router.get(
-    '/queues',
-    response_model=list[QueueDB],
-    dependencies=[Depends(current_superuser)],
-)
-async def get_queues(
-    session: AsyncSession = Depends(get_async_session),
-    wrapper_services: Aiogoogle = Depends(get_service),
-) -> list[dict[str, Union[str, timedelta]]]:
-    """Только для суперюзеров. Очередь."""
-    queues = await queue_crud.get_all(
-        session
-    )
-    spreadsheetid = await spreadsheets_create(wrapper_services)
-    await set_user_permissions(spreadsheetid, wrapper_services)
-    await spreadsheets_update_value(
-        spreadsheetid, queues, wrapper_services
-    )
-    return queues
+# @router.get(
+#     '/queues',
+#     response_model=list[QueueDB],
+#     dependencies=[Depends(current_superuser)],
+# )
+# async def get_queues(
+#     session: AsyncSession = Depends(get_async_session),
+#     wrapper_services: Aiogoogle = Depends(get_service),
+# ) -> list[dict[str, Union[str, timedelta]]]:
+#     """Только для суперюзеров. Очередь."""
+#     queues = await queue_crud.get_all(
+#         session
+#     )
+#     spreadsheetid = await spreadsheets_create(wrapper_services)
+#     await set_user_permissions(spreadsheetid, wrapper_services)
+#     await spreadsheets_update_value(
+#         spreadsheetid, queues, wrapper_services
+#     )
+#     return queues

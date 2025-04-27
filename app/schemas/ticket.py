@@ -17,7 +17,7 @@ class TicketCreate(BaseModel):
     number: Optional[str]
     created_at: datetime
     paid_date: Optional[datetime]
-    status: PaidStatus = Field(..., default=PaidStatus.BOOKED)
+    status: PaidStatus = Field(default=PaidStatus.BOOKED)
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
 
