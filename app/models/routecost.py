@@ -1,31 +1,24 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
 
-ROUTE_MAX_LENGHT = 20
 
-
-class Route(Base):
-
+class RouteCost(Base):
+    __tablename__ = 'route_cost'
     from_city_id = Column(Integer, ForeignKey('city.id'))
     to_city_id = Column(Integer, ForeignKey('city.id'))
-    cost = Column(Integer)
+    cost = Column(Float)
     from_city = relationship(
         'City',
         foreign_keys=[from_city_id],
-        back_populates='routes'
+        backref='outbound_routes'
     )
     to_city = relationship(
         'City',
         foreign_keys=[to_city_id],
-        back_populates='routes'
-    )
-    flights = relationship(
-        'Flight',
-        secondary='FlightRoute',
-        back_populates='routes'
+        backref='inbound_routes'
     )
 
     def __repr__(self):
-        return f'{self.from_city.name} -> {self.to_city.name}'
+        return f'{self.from_city} -> {self.to_city}: {self.cost}'

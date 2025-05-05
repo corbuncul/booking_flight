@@ -1,19 +1,22 @@
-from sqlalchemy import Column, DateTime, String
+from sqlalchemy import Column, Enum, DateTime, String
 from sqlalchemy.orm import relationship
 
+from app.core.constants import (
+    BOARD_MAX_LENGHT,
+    FLIGHT_MAX_LENGHT,
+    FlightStatus
+)
 from app.core.db import Base
-
-BOARD_MAX_LENGHT = 10
-FLIGHT_MAX_LENGHT = 10
 
 
 class Flight(Base):
-    number = Column(String(FLIGHT_MAX_LENGHT), nullable=False)
-    board_number = Column(String(BOARD_MAX_LENGHT), nullable=True)
+    number = Column(String(FLIGHT_MAX_LENGHT))
+    board = Column(String(BOARD_MAX_LENGHT), nullable=True)
     date_flight = Column(DateTime, nullable=False)
-    routes = relationship(
-        'Route',
-        secondary='FlightRoute',
+    status = Column(Enum(FlightStatus))
+    cities = relationship(
+        'City',
+        secondary='flight_city',
         back_populates='flights'
     )
 

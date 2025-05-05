@@ -132,4 +132,6 @@ dmypy.json
 
 # DataBase file
 *.db
+# Text file
 *.odt
+*.txt

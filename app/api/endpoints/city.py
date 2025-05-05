@@ -20,7 +20,7 @@ router = APIRouter()
 
 @router.get(
     '/',
-    response_model=CityDB,
+    response_model=list[CityDB],
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_cities(
