@@ -32,20 +32,20 @@ class ConfigSuperUser(ConfigBase):
     superuser_password: Optional[SecretStr] = Field(default=None)
 
 
-class ConfigGoogle(ConfigBase):
-    """Настройки сервисного аккаунта Google-APIs."""
-    model_config = SettingsConfigDict(env_prefix='GA_')
-    type: Optional[str] = Field(default=None)
-    project_id: Optional[str] = Field(default=None)
-    private_key_id: Optional[str] = Field(default=None)
-    private_key: Optional[SecretStr] = Field(default=None)
-    client_email: Optional[EmailStr] = Field(default=None)
-    client_id: Optional[str] = Field(default=None)
-    auth_uri: Optional[str] = Field(default=None)
-    token_uri: Optional[str] = Field(default=None)
-    auth_provider_x509_cert_url: Optional[str] = Field(default=None)
-    client_x509_cert_url: Optional[str] = Field(default=None)
-    email: Optional[EmailStr] = Field(default=None)
+# class ConfigGoogle(ConfigBase):
+#     """Настройки сервисного аккаунта Google-APIs."""
+#     model_config = SettingsConfigDict(env_prefix='GA_')
+#     type: Optional[str] = Field(default=None)
+#     project_id: Optional[str] = Field(default=None)
+#     private_key_id: Optional[str] = Field(default=None)
+#     private_key: Optional[SecretStr] = Field(default=None)
+#     client_email: Optional[EmailStr] = Field(default=None)
+#     client_id: Optional[str] = Field(default=None)
+#     auth_uri: Optional[str] = Field(default=None)
+#     token_uri: Optional[str] = Field(default=None)
+#     auth_provider_x509_cert_url: Optional[str] = Field(default=None)
+#     client_x509_cert_url: Optional[str] = Field(default=None)
+#     email: Optional[EmailStr] = Field(default=None)
 
 
 class Config(BaseSettings):
@@ -53,7 +53,7 @@ class Config(BaseSettings):
     app: ConfigApp = Field(default_factory=ConfigApp)
     db: ConfigDB = Field(default_factory=ConfigDB)
     superuser: ConfigSuperUser = Field(default_factory=ConfigSuperUser)
-    google: ConfigGoogle = Field(default_factory=ConfigGoogle)
+    # google: ConfigGoogle = Field(default_factory=ConfigGoogle)
 
     @classmethod
     def load(cls) -> "Config":

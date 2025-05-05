@@ -1,25 +1,34 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import (
     BaseModel,
     ConfigDict,
-    Field,
-    PositiveInt
+    Field
 )
 
-from app.models.ticket import PaidStatus
+from app.core.constants import TicketStatus
 
 
 class TicketCreate(BaseModel):
-    passenger_id: PositiveInt
-    flight_id: PositiveInt
-    number: Optional[str]
-    created_at: datetime
-    paid_date: Optional[datetime]
-    status: PaidStatus = Field(default=PaidStatus.BOOKED)
+    passenger_id: int
+    flight_id: int
+    from_city_id: int
+    to_city_id: int
+    number: str | None
+    status: TicketStatus = Field(default=TicketStatus.BOOKED)
+    created_at: datetime = Field(default_factory=datetime.now)
+    paid_date: datetime | None
+    model_config = ConfigDict(extra='forbid', from_attributes=True)
+
+
+class TicketUpdate(BaseModel):
+    number: str | None
+    status: TicketStatus = Field(default=TicketStatus.BOOKED)
+    paid_date: datetime | None = Field(default=datetime.now)
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
 
 class TicketDB(TicketCreate):
     id: int
+    final_price: float
+    model_config = ConfigDict(extra='forbid', from_attributes=True)

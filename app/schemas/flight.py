@@ -8,13 +8,16 @@ from pydantic import (
     PositiveInt
 )
 
-from app.models.flight import BOARD_MAX_LENGHT, FLIGHT_MAX_LENGHT
+from app.core.constants import BOARD_MAX_LENGHT, FLIGHT_MAX_LENGHT
+from .city import CityDB
 
 
 class FlightCreate(BaseModel):
     number: str = Field(..., min_length=5, max_length=FLIGHT_MAX_LENGHT)
-    board_number: str = Field(..., min_length=3, max_length=BOARD_MAX_LENGHT)
-    routes: list[PositiveInt]
+    board: Optional[str] = Field(
+        ..., max_length=BOARD_MAX_LENGHT
+    )
+    routes: list[CityDB] #???
     date_flight: datetime
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
@@ -23,10 +26,9 @@ class FlightUpdate(BaseModel):
     number: Optional[str] = Field(
         None, min_length=5, max_length=FLIGHT_MAX_LENGHT
     )
-    board_number: Optional[str] = Field(
+    board: Optional[str] = Field(
         None, min_length=3, max_length=BOARD_MAX_LENGHT
     )
-    routes: Optional[list[PositiveInt]]
     date_flight: Optional[datetime]
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
