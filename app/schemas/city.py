@@ -8,12 +8,14 @@ from pydantic import (
 
 from app.core.constants import (
     CODE_MAX_LENGHT,
-    CODE_MIN_LENGHT
+    CODE_MIN_LENGHT,
+    NAME_MAX_LENGHT
 )
+from app.schemas.flight import FlightDB
 
 
 class CityCreate(BaseModel):
-    name: str
+    name: str = Field(..., max_length=NAME_MAX_LENGHT)
     code: str = Field(
         ..., min_length=CODE_MIN_LENGHT, max_length=CODE_MAX_LENGHT
     )
@@ -21,7 +23,7 @@ class CityCreate(BaseModel):
 
 
 class CityUpdate(BaseModel):
-    name: Optional[str]
+    name: Optional[str] = Field(..., max_length=NAME_MAX_LENGHT)
     code: Optional[str] = Field(
         ..., min_length=CODE_MIN_LENGHT, max_length=CODE_MAX_LENGHT
     )
@@ -30,3 +32,7 @@ class CityUpdate(BaseModel):
 
 class CityDB(CityCreate):
     id: int
+
+
+class CityFlights(CityDB):
+    flights: list[FlightDB]

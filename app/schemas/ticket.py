@@ -7,6 +7,9 @@ from pydantic import (
 )
 
 from app.core.constants import TicketStatus
+from app.schemas.passenger import PassengerDB
+from app.schemas.city import CityDB
+from app.schemas.flight import FlightDB
 
 
 class TicketCreate(BaseModel):
@@ -31,4 +34,18 @@ class TicketUpdate(BaseModel):
 class TicketDB(TicketCreate):
     id: int
     final_price: float
+    model_config = ConfigDict(extra='forbid', from_attributes=True)
+
+
+class TicketResponse(BaseModel):
+    id: int
+    passenger: PassengerDB
+    flight: FlightDB
+    from_city: CityDB
+    to_city: CityDB
+    status: str
+    created_at: datetime
+    final_price: float
+    number: str | None
+    paid_date: datetime | None
     model_config = ConfigDict(extra='forbid', from_attributes=True)

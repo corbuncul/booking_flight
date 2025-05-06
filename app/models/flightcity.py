@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
@@ -8,8 +8,5 @@ class FlightCity(Base):
     __tablename__ = 'flight_city'
     flight_id = Column(Integer, ForeignKey('flight.id'))
     city_id = Column(Integer, ForeignKey('city.id'))
-    route_order = Column(Integer)
     flight = relationship('Flight', back_populates='flight_cities')
     city = relationship('City', back_populates='city_flights')
-    datetime_out = Column(DateTime)
-    datetime_in = Column(DateTime)

@@ -16,24 +16,25 @@ from app.models.passenger import (
     NAME_MAX_LENGHT,
     PHONE_MAX_LENGHT
 )
+from app.schemas.ticket import TicketDB
 
 
 class PassengerCreate(BaseModel):
     name: str = Field(
-        ..., min_length=1, max_length=NAME_MAX_LENGHT
+        ..., max_length=NAME_MAX_LENGHT
     )
     surname: str = Field(
-        ..., min_length=1, max_length=NAME_MAX_LENGHT
+        ..., max_length=NAME_MAX_LENGHT
     )
     phone: Optional[str] = Field(
-        None, min_length=1, max_length=PHONE_MAX_LENGHT
+        None, max_length=PHONE_MAX_LENGHT
     )
     email: Optional[EmailStr] = Field(
-        None, min_length=1, max_length=NAME_MAX_LENGHT
+        None, max_length=NAME_MAX_LENGHT
     )
     birthday: Optional[date]
     doc_nunber: Optional[str] = Field(
-        None, min_length=1, max_length=DOC_MAX_LENGHT
+        None, max_length=DOC_MAX_LENGHT
     )
     tg_id: Optional[str]
     model_config = ConfigDict(from_attributes=True, extra='forbid')
@@ -72,3 +73,7 @@ class PassengerDB(PassengerCreate):
         today = date.today()
         delta = relativedelta(today, self.birthday)
         return f"{delta.years} лет, {delta.months} месяцев и {delta.days} дней"
+
+
+class PassengerTickets(PassengerDB):
+    tickets: list[TicketDB]
