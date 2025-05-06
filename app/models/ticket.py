@@ -15,7 +15,7 @@ from app.core.db import Base
 
 
 class Ticket(Base):
-    number = Column(String(TICKET_MAX_LENGHT))
+    number = Column(String(TICKET_MAX_LENGHT), nullable=True)
     status = Column(Enum(TicketStatus), default=TicketStatus.BOOKED)
     passenger_id = Column(Integer, ForeignKey('passenger.id'))
     flight_id = Column(Integer, ForeignKey('flight.id'))
@@ -23,7 +23,7 @@ class Ticket(Base):
     to_city_id = Column(Integer, ForeignKey('city.id'))
     final_price = Column(Float)
     created_at = Column(DateTime, server_default=func.now())
-    paid_date = Column(DateTime)
+    paid_date = Column(DateTime, nullable=True)
     passenger = relationship('Passenger', backref='tickets')
     flight = relationship('Flight', backref='tickets')
     from_city = relationship('City', foreign_keys=[from_city_id])

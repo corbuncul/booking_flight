@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Route
 from app.crud import CRUDBase
-from app.schemas.route import RouteDB
+from app.schemas.routecost import RouteDB
 
 
 class CRUDRoute(CRUDBase):

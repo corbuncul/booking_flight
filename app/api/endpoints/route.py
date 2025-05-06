@@ -10,7 +10,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import route_crud
-from app.schemas.route import (
+from app.schemas.routecost import (
     RouteCreate,
     RouteDB,
     RouteUpdate
