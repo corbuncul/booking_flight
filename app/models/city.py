@@ -9,7 +9,7 @@ from app.core.db import Base
 
 
 class City(Base):
-    code = Column(String(CODE_MAX_LENGHT), unique=True)
+    code = Column(String(CODE_MAX_LENGHT), unique=True, index=True)
     name = Column(String(NAME_MAX_LENGHT))
     flights = relationship(
         'Flight',
