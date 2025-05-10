@@ -10,7 +10,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from app.core.constants import TICKET_MAX_LENGHT, TicketStatus
+from app.core.constants import CODE_MAX_LENGHT, TICKET_MAX_LENGHT, TicketStatus
 from app.core.db import Base
 
 
@@ -21,6 +21,7 @@ class Ticket(Base):
     flight_id = Column(Integer, ForeignKey('flight.id'))
     from_city_id = Column(Integer, ForeignKey('city.id'))
     to_city_id = Column(Integer, ForeignKey('city.id'))
+    discount_code = Column(String(CODE_MAX_LENGHT), nullable=True)
     final_price = Column(Float)
     created_at = Column(DateTime, server_default=func.now())
     paid_date = Column(DateTime, nullable=True)
