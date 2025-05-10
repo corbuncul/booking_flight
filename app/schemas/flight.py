@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import (
     BaseModel,
@@ -17,7 +16,7 @@ class FlightCreate(BaseModel):
     number: str = Field(
         ..., min_length=FLIGHT_MIN_LENGHT, max_length=FLIGHT_MAX_LENGHT
     )
-    board: Optional[str] = Field(
+    board: str | None = Field(
         ..., max_length=BOARD_MAX_LENGHT
     )
     date_flight: datetime
@@ -25,13 +24,13 @@ class FlightCreate(BaseModel):
 
 
 class FlightUpdate(BaseModel):
-    number: Optional[str] = Field(
+    number: str | None = Field(
         None, min_length=FLIGHT_MIN_LENGHT, max_length=FLIGHT_MAX_LENGHT
     )
-    board: Optional[str] = Field(
+    board: str | None = Field(
         None, max_length=BOARD_MAX_LENGHT
     )
-    date_flight: Optional[datetime]
+    date_flight: datetime | None
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
 

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -23,8 +21,8 @@ class CityCreate(BaseModel):
 
 
 class CityUpdate(BaseModel):
-    name: Optional[str] = Field(..., max_length=NAME_MAX_LENGHT)
-    code: Optional[str] = Field(
+    name: str | None = Field(..., max_length=NAME_MAX_LENGHT)
+    code: str | None = Field(
         ..., min_length=CODE_MIN_LENGHT, max_length=CODE_MAX_LENGHT
     )
     model_config = ConfigDict(extra='forbid', from_attributes=True)

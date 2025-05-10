@@ -1,5 +1,4 @@
 from datetime import date, datetime
-from typing import Optional
 
 from dateutil.relativedelta import relativedelta
 from pydantic import (
@@ -26,17 +25,17 @@ class PassengerCreate(BaseModel):
     surname: str = Field(
         ..., max_length=NAME_MAX_LENGHT
     )
-    phone: Optional[str] = Field(
+    phone: str | None = Field(
         None, max_length=PHONE_MAX_LENGHT
     )
-    email: Optional[EmailStr] = Field(
+    email: EmailStr | None = Field(
         None, max_length=NAME_MAX_LENGHT
     )
-    birthday: Optional[date]
-    doc_nunber: Optional[str] = Field(
+    birthday: date | None
+    doc_nunber: str | None = Field(
         None, max_length=DOC_MAX_LENGHT
     )
-    tg_id: Optional[str]
+    tg_id: str | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 
     @field_validator("birthday")
@@ -53,10 +52,10 @@ class PassengerCreate(BaseModel):
 
 
 class PassengerUpdate(PassengerCreate):
-    name: Optional[str] = Field(
+    name: str | None = Field(
         None, min_length=1, max_length=NAME_MAX_LENGHT
     )
-    surname: Optional[str] = Field(
+    surname: str | None = Field(
         None, min_length=1, max_length=NAME_MAX_LENGHT
     )
 
