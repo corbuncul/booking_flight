@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel, ConfigDict
 
 from app.schemas.city import CityDB
@@ -13,9 +11,9 @@ class RouteCostCreate(BaseModel):
 
 
 class RouteCostUpdate(BaseModel):
-    from_city_id: Optional[int]
-    to_city_id: Optional[int]
-    cost: Optional[float]
+    from_city_id: int | None
+    to_city_id: int | None
+    cost: float | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 
 

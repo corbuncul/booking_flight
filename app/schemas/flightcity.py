@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel, ConfigDict
 
 from app.schemas.city import CityDB
@@ -13,8 +11,8 @@ class FlightCityCreate(BaseModel):
 
 
 class FlightCityUpdate(BaseModel):
-    city_id: Optional[int]
-    flight_id: Optional[int]
+    city_id: int | None
+    flight_id: int | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 
 
