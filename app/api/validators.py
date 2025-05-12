@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.city import city_crud
 from app.crud.flight import flight_crud
 from app.crud.passenger import passenger_crud
-from app.crud.route import route_crud
+from app.crud.routecost import route_crud
 from app.crud.ticket import ticket_crud
 from app.models import City, Flight, Passenger, Route, Ticket
 
