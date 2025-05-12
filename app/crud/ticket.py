@@ -3,6 +3,7 @@ from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from app.models import Ticket
 from app.crud import CRUDBase
@@ -32,12 +33,15 @@ class CRUDTicket(CRUDBase):
             )
         )
         return db_ticket.scalars().all()
-    
+
     async def get_tickets_by_date_flight(
         self, session: AsyncSession, date_flight: datetime
     ) -> list[Optional[TicketDB]]:
+        """Получение билетов по дате вылета."""
         db_ticket = await session.execute(
-            select(self.model).where(
+            select(self.model).options(
+                joinedload(self.model.flight)
+            ).where(
                 self.model.flight.date_flight == date_flight
             )
         )
