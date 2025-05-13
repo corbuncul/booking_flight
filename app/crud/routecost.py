@@ -11,16 +11,13 @@ from app.schemas.routecost import RouteCostResponse
 class CRUDRouteCost(CRUDBase):
 
     async def get_cost_by_cities(
-        self,
-        session: AsyncSession,
-        from_city_id: int,
-        to_city_id: int
+        self, session: AsyncSession, from_city_id: int, to_city_id: int
     ) -> list[Optional[RouteCostResponse]]:
         """Получение стоимости маршрута между городами."""
         db_routes = await session.execute(
             select(self.model).where(
                 self.model.from_city_id == from_city_id,
-                self.model.to_city_id == to_city_id
+                self.model.to_city_id == to_city_id,
             )
         )
         return db_routes.scalars().all()

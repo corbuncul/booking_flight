@@ -10,14 +10,10 @@ class RouteCost(Base):
     to_city_id = Column(Integer, ForeignKey('city.id'))
     cost = Column(Float)
     from_city = relationship(
-        'City',
-        foreign_keys=[from_city_id],
-        backref='outbound_routes'
+        'City', foreign_keys=[from_city_id], backref='outbound_routes'
     )
     to_city = relationship(
-        'City',
-        foreign_keys=[to_city_id],
-        backref='inbound_routes'
+        'City', foreign_keys=[to_city_id], backref='inbound_routes'
     )
 
     def __repr__(self):

@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from app.core.constants import (
     BOARD_MAX_LENGHT,
     FLIGHT_MAX_LENGHT,
-    FlightStatus
+    FlightStatus,
 )
 from app.core.db import Base
 
@@ -15,9 +15,7 @@ class Flight(Base):
     date_flight = Column(DateTime, nullable=False)
     status = Column(Enum(FlightStatus))
     cities = relationship(
-        'City',
-        secondary='flight_city',
-        back_populates='flights'
+        'City', secondary='flight_city', back_populates='flights'
     )
 
     def __repr__(self):

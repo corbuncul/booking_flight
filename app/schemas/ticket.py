@@ -1,10 +1,6 @@
 from datetime import datetime
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field
-)
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.core.constants import TicketStatus
 from app.schemas.passenger import PassengerDB

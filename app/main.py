@@ -11,10 +11,11 @@ async def lifespan(app: FastAPI):
     await create_first_superuser()
     yield
 
+
 app = FastAPI(
     title=config.app.title,
     description=config.app.description,
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 app.include_router(main_router)

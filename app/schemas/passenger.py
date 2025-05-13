@@ -13,28 +13,18 @@ from pydantic import (
 from app.models.passenger import (
     DOC_MAX_LENGHT,
     NAME_MAX_LENGHT,
-    PHONE_MAX_LENGHT
+    PHONE_MAX_LENGHT,
 )
 from app.schemas.ticket import TicketDB
 
 
 class PassengerCreate(BaseModel):
-    name: str = Field(
-        ..., max_length=NAME_MAX_LENGHT
-    )
-    surname: str = Field(
-        ..., max_length=NAME_MAX_LENGHT
-    )
-    phone: str | None = Field(
-        None, max_length=PHONE_MAX_LENGHT
-    )
-    email: EmailStr | None = Field(
-        None, max_length=NAME_MAX_LENGHT
-    )
+    name: str = Field(..., max_length=NAME_MAX_LENGHT)
+    surname: str = Field(..., max_length=NAME_MAX_LENGHT)
+    phone: str | None = Field(None, max_length=PHONE_MAX_LENGHT)
+    email: EmailStr | None = Field(None, max_length=NAME_MAX_LENGHT)
     birthday: date | None
-    doc_nunber: str | None = Field(
-        None, max_length=DOC_MAX_LENGHT
-    )
+    doc_nunber: str | None = Field(None, max_length=DOC_MAX_LENGHT)
     tg_id: str | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 
@@ -52,12 +42,8 @@ class PassengerCreate(BaseModel):
 
 
 class PassengerUpdate(PassengerCreate):
-    name: str | None = Field(
-        None, min_length=1, max_length=NAME_MAX_LENGHT
-    )
-    surname: str | None = Field(
-        None, min_length=1, max_length=NAME_MAX_LENGHT
-    )
+    name: str | None = Field(None, min_length=1, max_length=NAME_MAX_LENGHT)
+    surname: str | None = Field(None, min_length=1, max_length=NAME_MAX_LENGHT)
 
 
 class PassengerDB(PassengerCreate):

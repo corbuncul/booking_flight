@@ -17,9 +17,7 @@ class CRUDTicket(CRUDBase):
     ) -> Optional[TicketDB]:
         """Получение билета по номеру."""
         db_ticket = await session.execute(
-            select(self.model).where(
-                self.model.number == number
-            )
+            select(self.model).where(self.model.number == number)
         )
         return db_ticket.scalars().first()
 
@@ -28,9 +26,7 @@ class CRUDTicket(CRUDBase):
     ) -> list[Optional[TicketDB]]:
         """Получение билетов по id полета."""
         db_ticket = await session.execute(
-            select(self.model).where(
-                self.model.flight_id == flight_id
-            )
+            select(self.model).where(self.model.flight_id == flight_id)
         )
         return db_ticket.scalars().all()
 
@@ -39,11 +35,9 @@ class CRUDTicket(CRUDBase):
     ) -> list[Optional[TicketDB]]:
         """Получение билетов по дате вылета."""
         db_ticket = await session.execute(
-            select(self.model).options(
-                joinedload(self.model.flight)
-            ).where(
-                self.model.flight.date_flight == date_flight
-            )
+            select(self.model)
+            .options(joinedload(self.model.flight))
+            .where(self.model.flight.date_flight == date_flight)
         )
         return db_ticket.scalars().all()
 

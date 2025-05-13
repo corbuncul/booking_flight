@@ -20,11 +20,7 @@ main_router.include_router(
     prefix='/flight',
     tags=['Рейсы'],
 )
-main_router.include_router(
-    route_router,
-    prefix='/route',
-    tags=['Маршруты']
-)
+main_router.include_router(route_router, prefix='/route', tags=['Маршруты'])
 main_router.include_router(
     passenger_router,
     prefix='/passenger',
