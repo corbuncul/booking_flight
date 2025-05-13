@@ -1,13 +1,9 @@
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field
-)
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.core.constants import (
     CODE_MAX_LENGHT,
     CODE_MIN_LENGHT,
-    NAME_MAX_LENGHT
+    NAME_MAX_LENGHT,
 )
 from app.schemas.flight import FlightDB
 

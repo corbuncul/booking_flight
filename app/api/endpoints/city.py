@@ -9,11 +9,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import city_crud
-from app.schemas.city import (
-    CityCreate,
-    CityDB,
-    CityUpdate
-)
+from app.schemas.city import CityCreate, CityDB, CityUpdate
 
 router = APIRouter()
 

@@ -3,7 +3,7 @@ from sqlalchemy import Column, Date, String
 from app.core.constants import (
     DOC_MAX_LENGHT,
     NAME_MAX_LENGHT,
-    PHONE_MAX_LENGHT
+    PHONE_MAX_LENGHT,
 )
 from app.core.db import Base
 

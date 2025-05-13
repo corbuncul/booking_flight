@@ -12,23 +12,17 @@ from app.schemas.flight import FlightDB
 class CRUDFlight(CRUDBase):
 
     async def get_flights_by_date(
-        self,
-        session: AsyncSession,
-        date: datetime
+        self, session: AsyncSession, date: datetime
     ) -> Optional[FlightDB]:
         """Получение рейсов по дате."""
 
         db_flights = await session.execute(
-            select(self.model).where(
-                self.model.date_flight == date
-            )
+            select(self.model).where(self.model.date_flight == date)
         )
         return db_flights.scalars().all()
 
     async def get_flights_by_number(
-        self,
-        session: AsyncSession,
-        number: str
+        self, session: AsyncSession, number: str
     ) -> list[Optional[FlightDB]]:
         """Получение рейсов по номеру рейса."""
 
@@ -40,16 +34,12 @@ class CRUDFlight(CRUDBase):
         return db_flights.scalars().all()
 
     async def get_flight_by_number_and_date(
-        self,
-        session: AsyncSession,
-        number: str,
-        date: datetime
+        self, session: AsyncSession, number: str, date: datetime
     ) -> Optional[FlightDB]:
         """Получение рейса по номеру и дате."""
         db_flight = await session.execute(
             select(self.model).where(
-                self.model.number == number,
-                self.model.date_flight == date
+                self.model.number == number, self.model.date_flight == date
             )
         )
         return db_flight.scalars().first()
@@ -60,7 +50,7 @@ class CRUDFlight(CRUDBase):
         *,
         number: str | None = None,
         date: datetime | None = None,
-        board_number: str | None = None
+        board_number: str | None = None,
     ) -> Optional[FlightDB]:
         """Получение рейса по различным параметрам."""
         query = select(self.model)

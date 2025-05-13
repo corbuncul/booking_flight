@@ -11,15 +11,11 @@ from app.schemas.discount import DiscountDB
 class CRUDDiscount(CRUDBase):
 
     async def get_discount_by_code(
-        self,
-        session: AsyncSession,
-        code: str
+        self, session: AsyncSession, code: str
     ) -> Optional[DiscountDB]:
         """Получение скидки по коду."""
         db_discount = await session.execute(
-            select(self.model).where(
-                self.model.code == code
-            )
+            select(self.model).where(self.model.code == code)
         )
         return db_discount.scalars().first()
 

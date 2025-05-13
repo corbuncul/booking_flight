@@ -6,7 +6,7 @@ from sqlalchemy import (
     ForeignKey,
     Float,
     func,
-    String
+    String,
 )
 from sqlalchemy.orm import relationship
 
@@ -31,4 +31,4 @@ class Ticket(Base):
     to_city = relationship('City', foreign_keys=[to_city_id])
 
     def __repr__(self):
-        return (f'{self.number}')
+        return f'{self.number}'

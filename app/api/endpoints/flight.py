@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.validators import (
     check_flight_duplicate,
     check_flight_exists,
-    check_route_exists
+    check_route_exists,
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
@@ -34,21 +34,18 @@ async def get_all_flight(
 
 
 @router.get(
-        '/get_by',
-        response_model=list[FlightDB],
+    '/get_by',
+    response_model=list[FlightDB],
 )
 async def get_by_parameters(
     session: AsyncSession = Depends(get_async_session),
     flight_number: str | None = None,
     date: datetime | None = None,
-    board_number: str | None = None
+    board_number: str | None = None,
 ):
     "Список рейсов по параметрам."
     return await flight_crud.get_flight_by_parameters(
-        session,
-        number=flight_number,
-        date=date,
-        board_number=board_number
+        session, number=flight_number, date=date, board_number=board_number
     )
 
 

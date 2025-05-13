@@ -11,15 +11,11 @@ from app.schemas.city import CityDB
 class CRUDCity(CRUDBase):
 
     async def get_city_by_names(
-        self,
-        session: AsyncSession,
-        name: str
+        self, session: AsyncSession, name: str
     ) -> Optional[CityDB]:
         """Получение города по названию."""
         db_city = await session.execute(
-            select(self.model).where(
-                self.model.name == name
-            )
+            select(self.model).where(self.model.name == name)
         )
         return db_city.scalars().first()
 
@@ -27,9 +23,7 @@ class CRUDCity(CRUDBase):
         self, session: AsyncSession, code: str
     ) -> Optional[CityDB]:
         db_city = await session.execute(
-            select(self.model).where(
-                self.model.code == code
-            )
+            select(self.model).where(self.model.code == code)
         )
         return db_city.scalars().first()
 

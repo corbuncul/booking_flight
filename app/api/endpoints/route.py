@@ -3,18 +3,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-from app.api.validators import (
-    check_route_exists,
-    check_route_duplicate
-)
+from app.api.validators import check_route_exists, check_route_duplicate
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import route_crud
-from app.schemas.routecost import (
-    RouteCreate,
-    RouteDB,
-    RouteUpdate
-)
+from app.schemas.routecost import RouteCreate, RouteDB, RouteUpdate
 
 
 router = APIRouter()

@@ -32,12 +32,12 @@ class CRUDPassenger(CRUDBase):
         self, session: AsyncSession, date_flight: datetime
     ) -> list[Optional[PassengerDB]]:
         db_passenger = await session.execute(
-            select(self.model).options(
+            select(self.model)
+            .options(
                 joinedload(self.model.tickets),
-                joinedload(self.model.tickets.flight)
-            ).where(
-                self.model.tickets.flight.date_flight == date_flight
+                joinedload(self.model.tickets.flight),
             )
+            .where(self.model.tickets.flight.date_flight == date_flight)
         )
         return db_passenger.scalars().all()
 
