@@ -57,7 +57,7 @@ async def update_passenger(
 
 
 @router.delete(
-    '/{route_id}',
+    '/{passenger_id}',
     response_model=PassengerDB,
     dependencies=[Depends(current_superuser)],
 )

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,7 +13,7 @@ class CRUDTicket(CRUDBase):
 
     async def get_ticket_by_number(
         self, session: AsyncSession, number: int
-    ) -> Optional[TicketDB]:
+    ) -> TicketDB | None:
         """Получение билета по номеру."""
         db_ticket = await session.execute(
             select(self.model).where(self.model.number == number)
@@ -23,7 +22,7 @@ class CRUDTicket(CRUDBase):
 
     async def get_tickets_by_flight(
         self, session: AsyncSession, flight_id: int
-    ) -> list[Optional[TicketDB]]:
+    ) -> list[TicketDB | None]:
         """Получение билетов по id полета."""
         db_ticket = await session.execute(
             select(self.model).where(self.model.flight_id == flight_id)
@@ -32,7 +31,7 @@ class CRUDTicket(CRUDBase):
 
     async def get_tickets_by_date_flight(
         self, session: AsyncSession, date_flight: datetime
-    ) -> list[Optional[TicketDB]]:
+    ) -> list[TicketDB | None]:
         """Получение билетов по дате вылета."""
         db_ticket = await session.execute(
             select(self.model)

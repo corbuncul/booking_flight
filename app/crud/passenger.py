@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,7 +17,7 @@ class CRUDPassenger(CRUDBase):
         *,
         surname: str | None = None,
         name: str | None = None,
-    ) -> list[Optional[PassengerDB]]:
+    ) -> list[PassengerDB | None]:
         """Получение пассажиров по фамилии и имени."""
         query = select(self.model)
         if surname is not None:
@@ -30,7 +29,7 @@ class CRUDPassenger(CRUDBase):
 
     async def get_passengers_by_date_flight(
         self, session: AsyncSession, date_flight: datetime
-    ) -> list[Optional[PassengerDB]]:
+    ) -> list[PassengerDB | None]:
         db_passenger = await session.execute(
             select(self.model)
             .options(

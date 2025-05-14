@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,9 +8,9 @@ from app.schemas.city import CityDB
 
 class CRUDCity(CRUDBase):
 
-    async def get_city_by_names(
+    async def get_city_by_name(
         self, session: AsyncSession, name: str
-    ) -> Optional[CityDB]:
+    ) -> CityDB | None:
         """Получение города по названию."""
         db_city = await session.execute(
             select(self.model).where(self.model.name == name)
@@ -21,7 +19,7 @@ class CRUDCity(CRUDBase):
 
     async def get_city_by_code(
         self, session: AsyncSession, code: str
-    ) -> Optional[CityDB]:
+    ) -> CityDB | None:
         db_city = await session.execute(
             select(self.model).where(self.model.code == code)
         )

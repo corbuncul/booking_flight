@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.validators import (
     check_flight_duplicate,
     check_flight_exists,
-    check_route_exists,
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
@@ -60,7 +59,6 @@ async def create_new_flight(
 ):
     """Создание рейса. Только для суперюзеров."""
     await check_flight_duplicate(session, flight.number, flight.date_flight)
-    await check_route_exists(session, flight.route)
     return await flight_crud.create(flight, session)
 
 
