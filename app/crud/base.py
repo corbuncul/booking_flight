@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,7 +27,7 @@ class CRUDBase:
         return db_objs.scalars().all()
 
     async def create(
-        self, obj_in, session: AsyncSession, user: Optional[User] = None
+        self, obj_in, session: AsyncSession, user: User | None = None
     ):
         """Создание объекта."""
         obj_in_data = obj_in.dict()

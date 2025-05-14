@@ -57,7 +57,7 @@ async def update_city(
 
 
 @router.delete(
-    '/{route_id}',
+    '/{city_id}',
     response_model=CityDB,
     dependencies=[Depends(current_superuser)],
 )

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,7 +10,7 @@ class CRUDDiscount(CRUDBase):
 
     async def get_discount_by_code(
         self, session: AsyncSession, code: str
-    ) -> Optional[DiscountDB]:
+    ) -> DiscountDB | None:
         """Получение скидки по коду."""
         db_discount = await session.execute(
             select(self.model).where(self.model.code == code)

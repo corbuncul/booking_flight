@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +12,7 @@ class CRUDFlight(CRUDBase):
 
     async def get_flights_by_date(
         self, session: AsyncSession, date: datetime
-    ) -> Optional[FlightDB]:
+    ) -> FlightDB | None:
         """Получение рейсов по дате."""
 
         db_flights = await session.execute(
@@ -23,7 +22,7 @@ class CRUDFlight(CRUDBase):
 
     async def get_flights_by_number(
         self, session: AsyncSession, number: str
-    ) -> list[Optional[FlightDB]]:
+    ) -> list[FlightDB | None]:
         """Получение рейсов по номеру рейса."""
 
         db_flights = await session.execute(
@@ -35,7 +34,7 @@ class CRUDFlight(CRUDBase):
 
     async def get_flight_by_number_and_date(
         self, session: AsyncSession, number: str, date: datetime
-    ) -> Optional[FlightDB]:
+    ) -> FlightDB | None:
         """Получение рейса по номеру и дате."""
         db_flight = await session.execute(
             select(self.model).where(
@@ -51,7 +50,7 @@ class CRUDFlight(CRUDBase):
         number: str | None = None,
         date: datetime | None = None,
         board_number: str | None = None,
-    ) -> Optional[FlightDB]:
+    ) -> FlightDB | None:
         """Получение рейса по различным параметрам."""
         query = select(self.model)
         if number is not None:

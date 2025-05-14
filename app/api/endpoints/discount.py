@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
     check_discount_exists,
+    check_discount_code_dublicate
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
@@ -36,6 +37,9 @@ async def create_new_discount(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Создание скидки."""
+    await check_discount_code_dublicate(
+        session=session, discount_code=discount.code
+    )
     new_discount = await discount_crud.create(discount, session)
     return new_discount
 
