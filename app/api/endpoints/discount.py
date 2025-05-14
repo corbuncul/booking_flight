@@ -61,7 +61,7 @@ async def update_discount(
 
 
 @router.delete(
-    '/{route_id}',
+    '/{discount_id}',
     response_model=DiscountDB,
     dependencies=[Depends(current_superuser)],
 )
