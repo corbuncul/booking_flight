@@ -11,7 +11,15 @@ from app.crud.flightcity import flightcity_crud
 from app.crud.passenger import passenger_crud
 from app.crud.routecost import routecost_crud
 from app.crud.ticket import ticket_crud
-from app.models import City, Discount, Flight, FlightCity, Passenger, RouteCost, Ticket
+from app.models import (
+    City,
+    Discount,
+    Flight,
+    FlightCity,
+    Passenger,
+    RouteCost,
+    Ticket,
+)
 
 
 async def check_city_exists(session: AsyncSession, city_id: int) -> City:
@@ -50,8 +58,7 @@ async def check_city_code_duplicate(
 
 
 async def check_discount_exists(
-    session: AsyncSession,
-    discount_id: int
+    session: AsyncSession, discount_id: int
 ) -> Discount:
     """Проверка существования скидки."""
     discount = await discount_crud.get(discount_id, session)
@@ -68,8 +75,7 @@ async def check_discount_code_dublicate(
 ) -> None:
     """Проверка на дублирование скидки."""
     discount = await discount_crud.get_discount_by_code(
-        session=session,
-        code=discount_code
+        session=session, code=discount_code
     )
     if discount is not None:
         raise HTTPException(
@@ -128,12 +134,11 @@ async def check_flightcity_exists(
     flightcity_id: int,
 ) -> FlightCity:
     """Проверка существования связи город - рейс."""
-    flightcity = await flightcity_crud.get(
-        session, flightcity_id
-        )
+    flightcity = await flightcity_crud.get(session, flightcity_id)
     if flightcity is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail='Связи город - рейс не найдено!'
+            status_code=HTTPStatus.NOT_FOUND,
+            detail='Связи город - рейс не найдено!',
         )
     return flightcity
 

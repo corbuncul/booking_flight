@@ -3,11 +3,18 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-from app.api.validators import check_routecost_exists, check_routecost_duplicate
+from app.api.validators import (
+    check_routecost_exists,
+    check_routecost_duplicate,
+)
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import routecost_crud
-from app.schemas.routecost import RouteCostCreate, RouteCostResponse, RouteCostUpdate
+from app.schemas.routecost import (
+    RouteCostCreate,
+    RouteCostResponse,
+    RouteCostUpdate,
+)
 
 
 router = APIRouter()
@@ -55,19 +62,19 @@ async def update_route(
         await check_routecost_duplicate(
             session,
             from_city_id=obj_in.from_city_id,
-            to_city_id=obj_in.to_city_id
+            to_city_id=obj_in.to_city_id,
         )
     if obj_in.from_city_id is not None:
         await check_routecost_duplicate(
             session,
             from_city_id=obj_in.from_city_id,
-            to_city_id=routecost.to_city_id
+            to_city_id=routecost.to_city_id,
         )
     if obj_in.to_city_id is not None:
         await check_routecost_duplicate(
             session,
             from_city_id=routecost.from_city_id,
-            to_city_id=obj_in.to_city_id
+            to_city_id=obj_in.to_city_id,
         )
     db_routecost = await routecost_crud.update(routecost, obj_in, session)
     return db_routecost

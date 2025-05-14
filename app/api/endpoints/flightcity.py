@@ -15,7 +15,7 @@ from app.crud import flightcity_crud
 from app.schemas.flightcity import (
     FlightCityCreate,
     FlightCityResponse,
-    FlightCityUpdate
+    FlightCityUpdate,
 )
 
 
@@ -70,24 +70,19 @@ async def update_flightcity(
     flightcity = await check_flightcity_exists(session, flightcity_id)
     if (obj_in.city_id is not None) and (obj_in.flight_id is not None):
         await check_flightcity_duplicate(
-            session,
-            flight_id=obj_in.flight_id,
-            city_id=obj_in.city_id
+            session, flight_id=obj_in.flight_id, city_id=obj_in.city_id
         )
     if obj_in.flight_id is not None:
         await check_flightcity_duplicate(
-            session,
-            flight_id=obj_in.flight_id,
-            city_id=flightcity.city_id
+            session, flight_id=obj_in.flight_id, city_id=flightcity.city_id
         )
     if obj_in.city_id is not None:
         await check_flightcity_duplicate(
-            session,
-            flight_id=flightcity.flight_id,
-            city_id=obj_in.city_id
+            session, flight_id=flightcity.flight_id, city_id=obj_in.city_id
         )
     db_flightcity = await flightcity_crud.update(flightcity, obj_in, session)
     return db_flightcity
+
 
 @router.delete(
     '/{flightcity_id}',

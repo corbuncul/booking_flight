@@ -31,16 +31,16 @@ class CRUDFlightCity(CRUDBase):
         return db_flights.scalars().all()
 
     async def get_flightcity_by_ids(
-            self, session: AsyncSession, flight_id: int, city_id: int
+        self, session: AsyncSession, flight_id: int, city_id: int
     ) -> FlightCityResponse | None:
         db_flightcity = await session.execute(
             select(self.model)
             .options(
-                joinedload(self.model.flight),
-                joinedload(self.model.city)
-            ).where(
+                joinedload(self.model.flight), joinedload(self.model.city)
+            )
+            .where(
                 self.model.flight_id == flight_id,
-                self.model.city_id == city_id
+                self.model.city_id == city_id,
             )
         )
         return db_flightcity.scalars().first()
