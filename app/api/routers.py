@@ -18,9 +18,7 @@ main_router.include_router(
     tags=['Населенные пункты'],
 )
 main_router.include_router(
-    discount_router,
-    prefix='/discount',
-    tags=['Скидки']
+    discount_router, prefix='/discount', tags=['Скидки']
 )
 main_router.include_router(
     flight_router,
@@ -28,14 +26,10 @@ main_router.include_router(
     tags=['Рейсы'],
 )
 main_router.include_router(
-    flightcity_router,
-    prefix='/flightcity',
-    tags=['Города в рейсах']
+    flightcity_router, prefix='/flightcity', tags=['Города в рейсах']
 )
 main_router.include_router(
-    routecost_router,
-    prefix='/routecost',
-    tags=['Цены']
+    routecost_router, prefix='/routecost', tags=['Цены']
 )
 main_router.include_router(
     passenger_router,

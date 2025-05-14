@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
     check_discount_exists,
-    check_discount_code_dublicate
+    check_discount_code_dublicate,
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
