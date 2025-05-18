@@ -9,10 +9,11 @@ from app.schemas.flight import FlightDB
 
 
 class CRUDFlight(CRUDBase):
+    """Класс для CRUD модели Flight."""
 
     async def get_flights_by_date(
         self, session: AsyncSession, date: datetime
-    ) -> FlightDB | None:
+    ) -> list[FlightDB | None]:
         """Получение рейсов по дате."""
 
         db_flights = await session.execute(
@@ -50,7 +51,7 @@ class CRUDFlight(CRUDBase):
         number: str | None = None,
         date: datetime | None = None,
         board_number: str | None = None,
-    ) -> FlightDB | None:
+    ) -> list[FlightDB | None]:
         """Получение рейса по различным параметрам."""
         query = select(self.model)
         if number is not None:

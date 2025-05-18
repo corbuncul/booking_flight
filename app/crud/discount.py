@@ -7,6 +7,7 @@ from app.schemas.discount import DiscountDB
 
 
 class CRUDDiscount(CRUDBase):
+    """Класс для CRUD модели Discount."""
 
     async def get_discount_by_code(
         self, session: AsyncSession, code: str

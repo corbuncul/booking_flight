@@ -10,6 +10,7 @@ from app.schemas.passenger import PassengerDB
 
 
 class CRUDPassenger(CRUDBase):
+    """Класс для CRUD модели Passenger."""
 
     async def get_passengers_by_names(
         self,

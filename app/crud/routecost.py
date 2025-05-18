@@ -7,6 +7,7 @@ from app.schemas.routecost import RouteCostResponse
 
 
 class CRUDRouteCost(CRUDBase):
+    """Класс для CRUD модели RouteCost."""
 
     async def get_cost_by_cities(
         self, session: AsyncSession, from_city_id: int, to_city_id: int
