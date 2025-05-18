@@ -7,6 +7,7 @@ from app.schemas.city import CityDB
 
 
 class CRUDCity(CRUDBase):
+    """Класс для CRUD модели City."""
 
     async def get_city_by_name(
         self, session: AsyncSession, name: str

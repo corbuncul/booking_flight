@@ -8,6 +8,7 @@ from app.schemas.flightcity import FlightCityResponse
 
 
 class CRUDFlightCity(CRUDBase):
+    """Класс для CRUD модели FlightCity."""
 
     async def get_cities_by_flight_id(
         self, session: AsyncSession, flight_id: int

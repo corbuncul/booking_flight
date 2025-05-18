@@ -10,6 +10,7 @@ from app.schemas.ticket import TicketDB
 
 
 class CRUDTicket(CRUDBase):
+    """Класс для CRUD модели Ticket."""
 
     async def get_ticket_by_number(
         self, session: AsyncSession, number: int

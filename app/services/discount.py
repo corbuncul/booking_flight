@@ -7,11 +7,12 @@ from app.models.discount import Discount
 async def apply_discount(
     session: AsyncSession, discount_code: str, original_price: float
 ) -> float:
-    discount = session.execute(
+    db_discount = await session.execute(
         select(Discount).where(
-            Discount.code == discount_code, Discount.is_active is True
+            Discount.code == discount_code, Discount.is_active.is_(True)
         )
-    ).first()
+    )
+    discount = db_discount.scalars().first()
     if not discount:
         return original_price  # Скидка не применяется
-    return original_price * (1 - discount.discount_percent / 100)
+    return float(original_price * (1 - discount.discount_percent / 100))

@@ -1,6 +1,6 @@
 """Импорты класса Base и всех моделей для Alembic."""
 
-from app.core.db import Base  # noqa: F401
+from app.core.db import Base
 from app.models import (
     City,
     Discount,
@@ -10,4 +10,16 @@ from app.models import (
     RouteCost,
     Ticket,
     User,
-)  # noqa: F401
+)
+
+__all__ = (
+    "Base",
+    "City",
+    "Discount",
+    "Flight",
+    "FlightCity",
+    "Passenger",
+    "RouteCost",
+    "Ticket",
+    "User"
+)

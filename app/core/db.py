@@ -1,7 +1,13 @@
-from sqlalchemy import Column, Integer
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, inspect
+from sqlalchemy.ext.asyncio import (
+    AsyncAttrs,
+    AsyncSession,
+    create_async_engine
+)
 from sqlalchemy.orm import (
-    declarative_base,
+    DeclarativeBase,
     declared_attr,
     sessionmaker,
 )
@@ -9,17 +15,39 @@ from sqlalchemy.orm import (
 from app.core.config import config
 
 
-class PreBase:
+class Base(AsyncAttrs, DeclarativeBase):
+    """Базовый класс для моделей."""
 
-    @declared_attr
-    @classmethod
-    def __tablename__(cls):
-        return cls.__name__.lower()
-
+    __abstract__ = True
     id = Column(Integer, primary_key=True)
 
+    @declared_attr.directive
+    @classmethod
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
 
-Base = declarative_base(cls=PreBase)
+    def to_dict(self, exclude_none: bool = False) -> dict:
+        """Преобразует объект модели в словарь.
+
+        Args:
+            exclude_none (bool): Исключать ли None значения из результата
+
+        Returns:
+            dict: Словарь с данными объекта
+
+        """
+        result = {}
+        for column in inspect(self.__class__).columns:
+            value = getattr(self, column.key)
+
+            if isinstance(value, datetime):
+                value = value.isoformat()
+
+            if not exclude_none or value is not None:
+                result[column.key] = value
+
+        return result
+
 
 engine = create_async_engine(config.db.database_url)
 

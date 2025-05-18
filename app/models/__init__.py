@@ -1,8 +1,19 @@
-from .city import City  # noqa: F401
-from .discount import Discount  # noqa: F401
-from .flight import Flight  # noqa: F401
-from .flightcity import FlightCity  # noqa: F401
-from .passenger import Passenger  # noqa: F401
-from .routecost import RouteCost  # noqa: F401
-from .ticket import Ticket  # noqa: F401
-from .user import User  # noqa: F401
+from .city import City
+from .discount import Discount
+from .flight import Flight
+from .flightcity import FlightCity
+from .passenger import Passenger
+from .routecost import RouteCost
+from .ticket import Ticket
+from .user import User
+
+__all__ = (
+    "City",
+    "Discount",
+    "Flight",
+    "FlightCity",
+    "Passenger",
+    "RouteCost",
+    "Ticket",
+    "User"
+)

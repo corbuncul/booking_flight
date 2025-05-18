@@ -134,7 +134,7 @@ async def check_flightcity_exists(
     flightcity_id: int,
 ) -> FlightCity:
     """Проверка существования связи город - рейс."""
-    flightcity = await flightcity_crud.get(session, flightcity_id)
+    flightcity = await flightcity_crud.get(flightcity_id, session)
     if flightcity is None:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
