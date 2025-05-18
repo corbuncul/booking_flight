@@ -52,7 +52,7 @@ pyflakes==3.2.0
 PyJWT==2.9.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
-python-multipart==0.0.17
+python-multipart==0.0.18
 PyYAML==6.0.2
 rsa==4.9
 six==1.17.0
