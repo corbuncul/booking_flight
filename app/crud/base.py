@@ -1,4 +1,4 @@
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Generic, Optional, TypeVar, Sequence
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -53,7 +53,7 @@ class CRUDBase(Generic[T]):
         )
         return db_obj.scalar_one_or_none()
 
-    async def get_all(self, session: AsyncSession) -> list[T]:
+    async def get_all(self, session: AsyncSession) -> Sequence[T]:
         """Получение всех объектов."""
         db_objs = await session.execute(select(self.model))
         return db_objs.scalars().all()
@@ -93,7 +93,7 @@ class CRUDBase(Generic[T]):
 
     async def remove(
         self,
-        db_obj: type[T],
+        db_obj: T,
         session: AsyncSession,
     ) -> T:
         """Удаление объекта."""
