@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.city import CityDB
-from app.schemas.flight import FlightDB
+from . import CityDB, FlightDB
 
 
 class FlightCityCreate(BaseModel):
@@ -25,3 +24,11 @@ class FlightCityResponse(BaseModel):
     city: CityDB
     flight: FlightDB
     model_config = ConfigDict(from_attributes=True, extra='forbid')
+
+
+class CityFlights(CityDB):
+    flights: list[FlightDB]
+
+
+class FlightCities(FlightDB):
+    routes: list[CityDB]

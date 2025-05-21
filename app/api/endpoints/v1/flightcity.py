@@ -12,7 +12,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import flightcity_crud
-from app.schemas.flightcity import (
+from app.schemas import (
     FlightCityCreate,
     FlightCityResponse,
     FlightCityUpdate,

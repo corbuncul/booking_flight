@@ -15,7 +15,7 @@ from app.models.passenger import (
     NAME_MAX_LENGHT,
     PHONE_MAX_LENGHT,
 )
-from app.schemas.ticket import TicketDB
+from . import TicketDB
 
 
 class PassengerCreate(BaseModel):

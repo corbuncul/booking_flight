@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import CRUDBase
 from app.models import Discount
-from app.schemas.discount import DiscountDB
+from app.schemas import DiscountDB
 
 
 class CRUDDiscount(CRUDBase):

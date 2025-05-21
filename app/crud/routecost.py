@@ -1,9 +1,11 @@
+from typing import Sequence
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import RouteCost
 from app.crud import CRUDBase
-from app.schemas.routecost import RouteCostResponse
+from app.schemas import RouteCostResponse
 
 
 class CRUDRouteCost(CRUDBase):
@@ -11,7 +13,7 @@ class CRUDRouteCost(CRUDBase):
 
     async def get_cost_by_cities(
         self, session: AsyncSession, from_city_id: int, to_city_id: int
-    ) -> list[RouteCostResponse | None]:
+    ) -> Sequence[RouteCostResponse] | None:
         """Получение стоимости маршрута между городами."""
         db_routes = await session.execute(
             select(self.model).where(

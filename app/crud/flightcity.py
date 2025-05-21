@@ -1,10 +1,12 @@
+from typing import Sequence
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from app.crud import CRUDBase
 from app.models import FlightCity
-from app.schemas.flightcity import FlightCityResponse
+from app.schemas import FlightCityResponse
 
 
 class CRUDFlightCity(CRUDBase):
@@ -12,7 +14,7 @@ class CRUDFlightCity(CRUDBase):
 
     async def get_cities_by_flight_id(
         self, session: AsyncSession, flight_id: int
-    ) -> list[FlightCityResponse | None]:
+    ) -> Sequence[FlightCityResponse] | None:
         """Получение городов по id полета."""
         db_cities = await session.execute(
             select(self.model)
@@ -23,7 +25,7 @@ class CRUDFlightCity(CRUDBase):
 
     async def get_flights_by_city_id(
         self, session: AsyncSession, city_id: int
-    ) -> list[FlightCityResponse | None]:
+    ) -> Sequence[FlightCityResponse] | None:
         db_flights = await session.execute(
             select(self.model)
             .options(joinedload(self.model.flight))

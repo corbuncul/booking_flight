@@ -9,7 +9,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import ticket_crud
-from app.schemas.ticket import TicketCreate, TicketDB
+from app.schemas import TicketCreate, TicketDB
 
 router = APIRouter()
 

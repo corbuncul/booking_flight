@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.city import CityDB
+from . import CityDB
 
 
 class RouteCostCreate(BaseModel):

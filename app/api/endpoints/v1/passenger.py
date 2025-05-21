@@ -9,7 +9,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import passenger_crud
-from app.schemas.passenger import PassengerCreate, PassengerDB, PassengerUpdate
+from app.schemas import PassengerCreate, PassengerDB, PassengerUpdate
 
 router = APIRouter()
 

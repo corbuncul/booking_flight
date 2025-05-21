@@ -3,9 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.core.constants import TicketStatus
-from app.schemas.passenger import PassengerDB
-from app.schemas.city import CityDB
-from app.schemas.flight import FlightDB
+from . import CityDB, PassengerDB, FlightDB
 
 
 class TicketCreate(BaseModel):

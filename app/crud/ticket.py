@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,7 +7,7 @@ from sqlalchemy.orm import joinedload
 
 from app.models import Ticket
 from app.crud import CRUDBase
-from app.schemas.ticket import TicketDB
+from app.schemas import TicketDB
 
 
 class CRUDTicket(CRUDBase):
@@ -23,7 +24,7 @@ class CRUDTicket(CRUDBase):
 
     async def get_tickets_by_flight(
         self, session: AsyncSession, flight_id: int
-    ) -> list[TicketDB | None]:
+    ) -> Sequence[TicketDB] | None:
         """Получение билетов по id полета."""
         db_ticket = await session.execute(
             select(self.model).where(self.model.flight_id == flight_id)
@@ -32,7 +33,7 @@ class CRUDTicket(CRUDBase):
 
     async def get_tickets_by_date_flight(
         self, session: AsyncSession, date_flight: datetime
-    ) -> list[TicketDB | None]:
+    ) -> Sequence[TicketDB] | None:
         """Получение билетов по дате вылета."""
         db_ticket = await session.execute(
             select(self.model)

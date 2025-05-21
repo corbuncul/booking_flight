@@ -5,7 +5,6 @@ from app.core.constants import (
     CODE_MIN_LENGHT,
     NAME_MAX_LENGHT,
 )
-from app.schemas.flight import FlightDB
 
 
 class CityCreate(BaseModel):
@@ -26,7 +25,3 @@ class CityUpdate(BaseModel):
 
 class CityDB(CityCreate):
     id: int
-
-
-class CityFlights(CityDB):
-    flights: list[FlightDB]
