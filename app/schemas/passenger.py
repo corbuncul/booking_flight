@@ -15,7 +15,6 @@ from app.models.passenger import (
     NAME_MAX_LENGHT,
     PHONE_MAX_LENGHT,
 )
-from . import TicketDB
 
 
 class PassengerCreate(BaseModel):
@@ -58,7 +57,3 @@ class PassengerDB(PassengerCreate):
         today = date.today()
         delta = relativedelta(today, self.birthday)
         return f"{delta.years} лет, {delta.months} месяцев и {delta.days} дней"
-
-
-class PassengerTickets(PassengerDB):
-    tickets: list[TicketDB]

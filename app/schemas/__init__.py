@@ -24,7 +24,6 @@ from .flightcity import (
 from .passenger import (
     PassengerCreate,
     PassengerDB,
-    PassengerTickets,
     PassengerUpdate,
 )
 from .routecost import (
@@ -36,12 +35,25 @@ from .routecost import (
 from .ticket import (
     TicketCreate,
     TicketDB,
-    TicketResponse,
-    TicketStatus,
     TicketUpdate,
+)
+from .ticket_passenger import (
+    TicketResponse,
+    PassengerTickets
 )
 from .user import (
     UserCreate,
     UserRead,
     UserUpdate,
 )
+
+__all__ = [
+    'CityCreate', 'CityDB', 'CityFlights', 'CityUpdate',
+    'FlightCities', 'FlightCityCreate', 'FlightCityDB', 'FlightCityResponse',
+    'FlightCityUpdate', 'FlightCreate', 'FlightDB', 'FlightUpdate',
+    'DiscountCreate', 'DiscountDB', 'DiscountUpdate',
+    'PassengerCreate', 'PassengerDB', 'PassengerTickets', 'PassengerUpdate',
+    'RoutCostDB', 'RouteCostCreate', 'RouteCostResponse', 'RouteCostUpdate',
+    'TicketCreate', 'TicketDB', 'TicketResponse', 'TicketUpdate',
+    'UserCreate', 'UserRead', 'UserUpdate',
+]
