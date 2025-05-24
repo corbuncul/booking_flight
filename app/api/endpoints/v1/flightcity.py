@@ -43,7 +43,7 @@ async def create_new_flightcity(
     flightcity: FlightCityCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Добавление города в рейс."""
+    """Добавление города в рейс. Только для суперюзеров."""
     await check_flight_exists(
         session=session,
         flight_id=flightcity.flight_id,
@@ -66,7 +66,7 @@ async def update_flightcity(
     obj_in: FlightCityUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Обновление связи маршрут - город."""
+    """Обновление связи маршрут - город. Только для суперюзеров."""
     flightcity = await check_flightcity_exists(session, flightcity_id)
     if (obj_in.city_id is not None) and (obj_in.flight_id is not None):
         await check_flightcity_duplicate(
@@ -93,7 +93,7 @@ async def delete_flightcity(
     flightcity_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Удаление связи город - рейс."""
+    """Удаление связи город - рейс. Только для суперюзеров."""
     flightcity = await check_flightcity_exists(session, flightcity_id)
     db_flightcity = await flightcity_crud.remove(flightcity, session)
     return db_flightcity

@@ -21,7 +21,10 @@ class CRUDPassenger(CRUDBase):
         name: str | None = None,
     ) -> Sequence[PassengerDB] | None:
         """Получение пассажиров по фамилии и имени."""
-        query = select(self.model)
+        query = select(self.model).options(
+                joinedload(self.model.tickets),
+                joinedload(self.model.tickets.flight),
+            )
         if surname is not None:
             query = query.where(self.model.surname == surname)
         if name is not None:

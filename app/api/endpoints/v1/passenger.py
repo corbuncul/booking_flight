@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from datetime import datetime
 
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -16,7 +17,7 @@ router = APIRouter()
 
 @router.get(
     '/',
-    response_model=PassengerDB,
+    response_model=list[PassengerDB],
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_passengers(
@@ -24,6 +25,35 @@ async def get_all_passengers(
 ):
     """Получение всех пассажиров. Только для суперюзеров."""
     return await passenger_crud.get_all(session)
+
+
+@router.get(
+    '/{date}',
+    response_model=list[PassengerDB],
+    dependencies=[Depends(current_superuser)],
+)
+async def get_passengers_by_date(
+    date: datetime,
+    session: AsyncSession = Depends(get_async_session),
+):
+    """Получение пассажиров по дате вылета. Только для суперюзеров."""
+    return await passenger_crud.get_passengers_by_date_flight(session, date)
+
+
+@router.get(
+    '/name',
+    response_model=list[PassengerDB],
+    dependencies=[Depends(current_superuser)],
+)
+async def get_passengers_by_name(
+    session: AsyncSession = Depends(get_async_session),
+    name: str | None = None,
+    surname: str | None = None,
+):
+    """Получение пассажиров по имени или фамилии. Только для суперюзеров."""
+    return passenger_crud.get_passengers_by_names(
+        session, name=name, surname=surname
+    )
 
 
 @router.post(
@@ -35,7 +65,7 @@ async def create_new_passener(
     passenger: PassengerCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Создание пассажира."""
+    """Создание пассажира. Только для суперюзеров."""
     new_passenger = await passenger_crud.create(passenger, session)
     return new_passenger
 
@@ -50,7 +80,7 @@ async def update_passenger(
     obj_in: PassengerUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Обновление пассажира."""
+    """Обновление пассажира. Только для суперюзеров."""
     passenger = await check_passenger_exists(session, passenger_id)
     db_passenger = await passenger_crud.update(passenger, obj_in, session)
     return db_passenger
@@ -65,7 +95,7 @@ async def delete_passenger(
     passenger_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Удаление пассажира."""
+    """Удаление пассажира. Только для суперюзеров."""
     passenger = await check_passenger_exists(session, passenger_id)
     db_passenger = await passenger_crud.remove(passenger, session)
     return db_passenger
