@@ -12,7 +12,8 @@ from app.core.user import current_superuser
 from app.crud import routecost_crud
 from app.schemas import (
     RouteCostCreate,
-    RouteCostResponse,
+    RoutCostDB,
+    #  RouteCostResponse,
     RouteCostUpdate,
 )
 
@@ -22,7 +23,7 @@ router = APIRouter()
 
 @router.get(
     '/',
-    response_model=list[RouteCostResponse],
+    response_model=list[RoutCostDB],
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_routes(
@@ -34,21 +35,21 @@ async def get_all_routes(
 
 @router.post(
     '/',
-    response_model=RouteCostResponse,
+    response_model=RoutCostDB,
     dependencies=[Depends(current_superuser)],
 )
 async def create_new_route(
     routecost: RouteCostCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Создание маршрута."""
+    """Создание маршрута. Только для суперюзеров."""
     new_routecost = await routecost_crud.create(routecost, session)
     return new_routecost
 
 
 @router.patch(
     '/{routecost_id}',
-    response_model=RouteCostResponse,
+    response_model=RoutCostDB,
     dependencies=[Depends(current_superuser)],
 )
 async def update_route(
@@ -56,7 +57,7 @@ async def update_route(
     obj_in: RouteCostUpdate,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Обновление маршрута."""
+    """Обновление маршрута. Только для суперюзеров."""
     routecost = await check_routecost_exists(session, routecost_id)
     if (obj_in.from_city_id is not None) and (obj_in.to_city_id is not None):
         await check_routecost_duplicate(
@@ -82,14 +83,14 @@ async def update_route(
 
 @router.delete(
     '/{routecost_id}',
-    response_model=RouteCostResponse,
+    response_model=RoutCostDB,
     dependencies=[Depends(current_superuser)],
 )
 async def delete_route(
     routecost_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Удаление маршрута."""
+    """Удаление маршрута. Только для суперюзеров."""
     routecost = await check_routecost_exists(session, routecost_id)
     db_routecost = await routecost_crud.remove(routecost, session)
     return db_routecost

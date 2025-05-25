@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from datetime import datetime
 
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -9,14 +10,14 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import ticket_crud
-from app.schemas import TicketCreate, TicketDB
+from app.schemas import TicketCreate, TicketDB, TicketResponse
 
 router = APIRouter()
 
 
 @router.get(
     '/',
-    response_model=TicketDB,
+    response_model=list[TicketDB],
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_tickets(
@@ -49,9 +50,53 @@ async def get_ticket(
     ticket_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Получение билета."""
+    """Получение билета по id."""
     ticket = await check_ticket_exists(session, ticket_id)
     return ticket
+
+
+@router.get(
+    '/{ticket_number}',
+    response_model=TicketResponse,
+    dependencies=[Depends(current_superuser)],
+)
+async def get_ticket_by_number(
+    ticket_number: str,
+    session: AsyncSession = Depends(get_async_session),
+):
+    """Получение билета по номеру."""
+    ticket = await ticket_crud.get_ticket_by_number(session, ticket_number)
+    return ticket
+
+
+@router.get(
+    '/{date_flight}',
+    response_model=list[TicketResponse],
+    dependencies=[Depends(current_superuser)],
+)
+async def get_ticket_by_date_flight(
+    date_flight: datetime,
+    session: AsyncSession = Depends(get_async_session),
+):
+    """Получение билетов по дате вылета."""
+    tickets = await ticket_crud.get_tickets_by_date_flight(
+        session, date_flight
+    )
+    return tickets
+
+
+@router.get(
+    '/{flight_id}',
+    response_model=list[TicketResponse],
+    dependencies=[Depends(current_superuser)],
+)
+async def get_ticket_by_flight(
+    flight_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    """Получение билетов по рейсу."""
+    tickets = await ticket_crud.get_tickets_by_flight(session, flight_id)
+    return tickets
 
 
 @router.delete(

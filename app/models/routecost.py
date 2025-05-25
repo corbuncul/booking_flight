@@ -17,4 +17,4 @@ class RouteCost(Base):
     )
 
     def __repr__(self):
-        return f'{self.from_city} -> {self.to_city}: {self.cost}'
+        return f'{self.from_city_id} -> {self.to_city_id}: {self.cost}'

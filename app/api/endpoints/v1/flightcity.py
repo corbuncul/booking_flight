@@ -14,7 +14,8 @@ from app.core.user import current_superuser
 from app.crud import flightcity_crud
 from app.schemas import (
     FlightCityCreate,
-    FlightCityResponse,
+    FlightCityDB,
+    #  FlightCityResponse,
     FlightCityUpdate,
 )
 
@@ -24,7 +25,7 @@ router = APIRouter()
 
 @router.get(
     '/',
-    response_model=list[FlightCityResponse],
+    response_model=list[FlightCityDB],
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_flightcity(
@@ -36,7 +37,7 @@ async def get_all_flightcity(
 
 @router.post(
     '/',
-    response_model=FlightCityResponse,
+    response_model=FlightCityDB,
     dependencies=[Depends(current_superuser)],
 )
 async def create_new_flightcity(
@@ -58,7 +59,7 @@ async def create_new_flightcity(
 
 @router.patch(
     '/{flightcity_id}',
-    response_model=FlightCityResponse,
+    response_model=FlightCityDB,
     dependencies=[Depends(current_superuser)],
 )
 async def update_flightcity(
@@ -86,7 +87,7 @@ async def update_flightcity(
 
 @router.delete(
     '/{flightcity_id}',
-    response_model=FlightCityResponse,
+    response_model=FlightCityDB,
     dependencies=[Depends(current_superuser)],
 )
 async def delete_flightcity(

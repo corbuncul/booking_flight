@@ -13,7 +13,7 @@ class CRUDRouteCost(CRUDBase):
 
     async def get_cost_by_cities(
         self, session: AsyncSession, from_city_id: int, to_city_id: int
-    ) -> Sequence[RouteCostResponse] | None:
+    ) -> RouteCostResponse | None:
         """Получение стоимости маршрута между городами."""
         db_routes = await session.execute(
             select(self.model).where(
@@ -21,7 +21,7 @@ class CRUDRouteCost(CRUDBase):
                 self.model.to_city_id == to_city_id,
             )
         )
-        return db_routes.scalars().all()
+        return db_routes.scalars().first()
 
 
 routecost_crud = CRUDRouteCost(RouteCost)
