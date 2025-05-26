@@ -16,9 +16,9 @@ class CityCreate(BaseModel):
 
 
 class CityUpdate(BaseModel):
-    name: str | None = Field(..., max_length=NAME_MAX_LENGHT)
+    name: str | None = Field(None, max_length=NAME_MAX_LENGHT)
     code: str | None = Field(
-        ..., min_length=CODE_MIN_LENGHT, max_length=CODE_MAX_LENGHT
+        None, min_length=CODE_MIN_LENGHT, max_length=CODE_MAX_LENGHT
     )
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 

@@ -37,6 +37,7 @@ async def create_new_ticket(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Создание билета."""
+    #  добавить расчет стоимости (с учетом скидки)
     new_ticket = await ticket_crud.create(ticket, session)
     return new_ticket
 

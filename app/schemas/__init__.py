@@ -6,6 +6,7 @@ from .city import (
 from .flight import (
     FlightCreate,
     FlightDB,
+    FlightCities,
     FlightUpdate,
 )
 from .discount import (
@@ -14,11 +15,8 @@ from .discount import (
     DiscountUpdate,
 )
 from .flightcity import (
-    CityFlights,
-    FlightCities,
     FlightCityCreate,
     FlightCityDB,
-    FlightCityResponse,
     FlightCityUpdate,
 )
 from .passenger import (
@@ -48,8 +46,8 @@ from .user import (
 )
 
 __all__ = [
-    'CityCreate', 'CityDB', 'CityFlights', 'CityUpdate',
-    'FlightCities', 'FlightCityCreate', 'FlightCityDB', 'FlightCityResponse',
+    'CityCreate', 'CityDB', 'CityUpdate',
+    'FlightCities', 'FlightCityCreate', 'FlightCityDB',
     'FlightCityUpdate', 'FlightCreate', 'FlightDB', 'FlightUpdate',
     'DiscountCreate', 'DiscountDB', 'DiscountUpdate',
     'PassengerCreate', 'PassengerDB', 'PassengerTickets', 'PassengerUpdate',

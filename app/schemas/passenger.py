@@ -23,7 +23,7 @@ class PassengerCreate(BaseModel):
     phone: str | None = Field(None, max_length=PHONE_MAX_LENGHT)
     email: EmailStr | None = Field(None, max_length=NAME_MAX_LENGHT)
     birthday: date | None
-    doc_nunber: str | None = Field(None, max_length=DOC_MAX_LENGHT)
+    doc_number: str | None = Field(None, max_length=DOC_MAX_LENGHT)
     tg_id: str | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 

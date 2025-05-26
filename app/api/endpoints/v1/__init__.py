@@ -5,6 +5,7 @@ from .flightcity import router as flightcity_router
 from .routecost import router as routecost_router
 from .passenger import router as passenger_router
 from .ticket import router as ticket_router
+from .user import router as user_router
 
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     'routecost_router',
     'passenger_router',
     'ticket_router',
+    'user_router'
 ]

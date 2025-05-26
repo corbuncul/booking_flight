@@ -10,14 +10,12 @@ from app.api.validators import (
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
-from app.crud import city_crud, flight_crud, flightcity_crud
+from app.crud import flight_crud
 from app.schemas import (
-    CityFlights,
     FlightCreate,
     FlightDB,
     FlightUpdate,
 )
-from app.schemas.flightcity import FlightCityResponse
 
 
 router = APIRouter()
@@ -48,42 +46,6 @@ async def get_by_parameters(
     return await flight_crud.get_flight_by_parameters(
         session, number=flight_number, date=date, board_number=board_number
     )
-
-
-@router.get(
-    '/by_city_id/{city_id}',
-    response_model=list[FlightCityResponse],
-)
-async def get_by_city_id(
-    city_id: int,
-    session: AsyncSession = Depends(get_async_session),
-):
-    """Список рейсов из города по id города."""
-    return await flightcity_crud.get_flights_by_city_id(session, city_id)
-
-
-@router.get(
-    '/by_city_code/{city_code}',
-    response_model=CityFlights,
-)
-async def get_by_city_code(
-    city_code: str,
-    session: AsyncSession = Depends(get_async_session),
-):
-    """Список рейсов из города по коду города."""
-    return await city_crud.get_city_by_code(session, city_code)
-
-
-@router.get(
-    '/by_city_name/{city_name}',
-    response_model=CityFlights,
-)
-async def get_by_city_name(
-    city_name: str,
-    session: AsyncSession = Depends(get_async_session),
-):
-    """Список рейсов из города по имени города."""
-    return await city_crud.get_city_by_name(session, city_name)
 
 
 @router.post(

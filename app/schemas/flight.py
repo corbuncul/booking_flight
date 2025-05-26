@@ -7,6 +7,7 @@ from app.core.constants import (
     FLIGHT_MAX_LENGHT,
     FLIGHT_MIN_LENGHT,
 )
+from app.schemas import CityDB
 
 
 class FlightCreate(BaseModel):
@@ -29,3 +30,7 @@ class FlightUpdate(BaseModel):
 
 class FlightDB(FlightCreate):
     id: int
+
+
+class FlightCities(FlightDB):
+    routes: list[CityDB]

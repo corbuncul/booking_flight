@@ -15,7 +15,6 @@ from app.crud import flightcity_crud
 from app.schemas import (
     FlightCityCreate,
     FlightCityDB,
-    #  FlightCityResponse,
     FlightCityUpdate,
 )
 

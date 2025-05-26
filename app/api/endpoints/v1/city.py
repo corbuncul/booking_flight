@@ -12,9 +12,8 @@ from app.crud import city_crud, flightcity_crud
 from app.schemas import (
     CityCreate,
     CityDB,
-    CityFlights,
     CityUpdate,
-    FlightCityResponse
+    FlightCityDB
 )
 
 router = APIRouter()
@@ -45,7 +44,7 @@ async def get_by_id(
 
 @router.get(
     '/code/{city_code}',
-    response_model=CityFlights,
+    response_model=CityDB,
 )
 async def get_by_code(
     city_code: str,
@@ -57,7 +56,7 @@ async def get_by_code(
 
 @router.get(
     '/name/{city_name}',
-    response_model=CityFlights,
+    response_model=CityDB,
 )
 async def get_by_name(
     city_name: str,
@@ -68,8 +67,8 @@ async def get_by_name(
 
 
 @router.get(
-        '/by_flight_id/{flight_id}',
-        response_model=list[FlightCityResponse],
+        '/flight/{flight_id}',
+        response_model=list[FlightCityDB],
 )
 async def get_by_flight_id(
     flight_id: int,
