@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from fastapi import APIRouter, Depends
 
@@ -39,12 +39,14 @@ async def get_all_flight(
 async def get_by_parameters(
     session: AsyncSession = Depends(get_async_session),
     flight_number: str | None = None,
-    date: datetime | None = None,
+    date_flight: date | None = None,
     board_number: str | None = None,
 ):
     """Список рейсов по параметрам."""
     return await flight_crud.get_flight_by_parameters(
-        session, number=flight_number, date=date, board_number=board_number
+        session, number=flight_number,
+        date_flight=date_flight,
+        board_number=board_number
     )
 
 

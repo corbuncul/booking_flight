@@ -3,20 +3,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import CRUDBase
 from app.models import Discount
-from app.schemas import DiscountDB
 
 
 class CRUDDiscount(CRUDBase):
     """Класс для CRUD модели Discount."""
 
+    model = Discount
+
     async def get_discount_by_code(
         self, session: AsyncSession, code: str
-    ) -> DiscountDB | None:
-        """Получение скидки по коду."""
+    ) -> Discount | None:
+        """Получение действующей скидки по коду."""
         db_discount = await session.execute(
-            select(self.model).where(self.model.code == code)
+            select(self.model).where(
+                self.model.code == code,
+                self.model.is_active.is_(True)
+            )
         )
         return db_discount.scalars().first()
 
 
-discount_crud = CRUDDiscount(Discount)
+discount_crud = CRUDDiscount()

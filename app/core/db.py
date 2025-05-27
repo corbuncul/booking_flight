@@ -24,7 +24,12 @@ class Base(AsyncAttrs, DeclarativeBase):
     @declared_attr.directive
     @classmethod
     def __tablename__(cls) -> str:
-        return cls.__name__.lower()
+        # CamelCase -> snake_case
+        name = cls.__name__[0].lower() + cls.__name__[1:]
+        name = ''.join(
+            ['_' + c.lower() if c.isupper() else c for c in name]
+        ).lstrip('_')
+        return name
 
     def to_dict(self, exclude_none: bool = False) -> dict:
         """Преобразует объект модели в словарь.

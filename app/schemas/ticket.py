@@ -12,6 +12,7 @@ class TicketCreate(BaseModel):
     to_city_id: int
     number: str | None = None
     discount_code: str | None = None
+    final_price: float = Field(exclude=True)
     status: TicketStatus = Field(default=TicketStatus.BOOKED)
     created_at: datetime = Field(default_factory=datetime.now)
     paid_date: datetime | None = None

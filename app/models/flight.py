@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Enum, DateTime, String
+from sqlalchemy import Column, Enum, Date, String, Time
 from sqlalchemy.orm import relationship
 
 from app.core.constants import (
@@ -12,7 +12,8 @@ from app.core.db import Base
 class Flight(Base):
     number = Column(String(FLIGHT_MAX_LENGHT))
     board = Column(String(BOARD_MAX_LENGHT), nullable=True)
-    date_flight = Column(DateTime, nullable=False)
+    date_flight = Column(Date, nullable=False)
+    time_flight = Column(Time, nullable=False)
     status = Column(Enum(FlightStatus))
     cities = relationship(
         'City', secondary='flight_city', back_populates='flights'

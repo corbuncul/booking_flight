@@ -1,16 +1,18 @@
-from datetime import datetime
+from datetime import date
 from http import HTTPStatus
 
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.crud.city import city_crud
-from app.crud.discount import discount_crud
-from app.crud.flight import flight_crud
-from app.crud.flightcity import flightcity_crud
-from app.crud.passenger import passenger_crud
-from app.crud.routecost import routecost_crud
-from app.crud.ticket import ticket_crud
+from app.crud import (
+    city_crud,
+    discount_crud,
+    flight_crud,
+    flightcity_crud,
+    passenger_crud,
+    routecost_crud,
+    ticket_crud,
+)
 from app.models import (
     City,
     Discount,
@@ -87,7 +89,7 @@ async def check_discount_code_dublicate(
 async def check_flight_duplicate(
     session: AsyncSession,
     flight_number: str,
-    flight_date: datetime,
+    flight_date: date,
 ) -> None:
     """Провверка на дублирование рейса."""
     flight_id = await flight_crud.get_flight_by_number_and_date(
@@ -189,10 +191,10 @@ async def check_routecost_duplicate(
     to_city_id: int,
 ) -> None:
     """Провверка на дублирование маршрута."""
-    routes = await routecost_crud.get_cost_by_cities(
+    route = await routecost_crud.get_cost_by_cities(
         session, from_city_id=from_city_id, to_city_id=to_city_id
     )
-    if len(routes):
+    if route:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
             detail='Маршрут с такими пунктами уже существует!',

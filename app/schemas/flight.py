@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, time
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -15,7 +15,8 @@ class FlightCreate(BaseModel):
         ..., min_length=FLIGHT_MIN_LENGHT, max_length=FLIGHT_MAX_LENGHT
     )
     board: str | None = Field(None, max_length=BOARD_MAX_LENGHT)
-    date_flight: datetime
+    date_flight: date
+    time_flight: time
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
 
@@ -24,7 +25,8 @@ class FlightUpdate(BaseModel):
         None, min_length=FLIGHT_MIN_LENGHT, max_length=FLIGHT_MAX_LENGHT
     )
     board: str | None = Field(None, max_length=BOARD_MAX_LENGHT)
-    date_flight: datetime | None
+    date_flight: date | None
+    time_flight: time | None
     model_config = ConfigDict(extra='forbid', from_attributes=True)
 
 

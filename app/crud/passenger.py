@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from typing import Sequence
 
 from sqlalchemy import select
@@ -7,11 +7,12 @@ from sqlalchemy.orm import joinedload
 
 from app.crud import CRUDBase
 from app.models import Passenger
-from app.schemas import PassengerDB
 
 
 class CRUDPassenger(CRUDBase):
     """Класс для CRUD модели Passenger."""
+
+    model = Passenger
 
     async def get_passengers_by_names(
         self,
@@ -19,7 +20,7 @@ class CRUDPassenger(CRUDBase):
         *,
         surname: str | None = None,
         name: str | None = None,
-    ) -> Sequence[PassengerDB] | None:
+    ) -> Sequence[Passenger] | None:
         """Получение пассажиров по фамилии и имени."""
         query = select(self.model).options(
                 joinedload(self.model.tickets),
@@ -33,8 +34,8 @@ class CRUDPassenger(CRUDBase):
         return db_passenger.scalars().all()
 
     async def get_passengers_by_date_flight(
-        self, session: AsyncSession, date_flight: datetime
-    ) -> Sequence[PassengerDB] | None:
+        self, session: AsyncSession, date_flight: date
+    ) -> Sequence[Passenger] | None:
         """Получение пассажиров по дате вылета."""
         db_passenger = await session.execute(
             select(self.model)
@@ -47,4 +48,4 @@ class CRUDPassenger(CRUDBase):
         return db_passenger.scalars().all()
 
 
-passenger_crud = CRUDPassenger(Passenger)
+passenger_crud = CRUDPassenger()

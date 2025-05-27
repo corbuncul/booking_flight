@@ -14,9 +14,12 @@ T = TypeVar("T", bound=Base)
 class CRUDBase(Generic[T]):
     """Базовый класс для всех CRUD."""
 
-    def __init__(self, model: type[T]) -> None:
+    model: type[T]
+
+    def __init__(self) -> None:  # noqa: D107
         """Конструктор объекта класса CRUDBase."""
-        self.model = model
+        if self.model is None:
+            raise ValueError('Модель должна быть указана в дочернем классе')
 
     async def get(
         self,

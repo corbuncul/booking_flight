@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,8 +9,9 @@ from app.api.validators import (
 )
 from app.core.db import get_async_session
 from app.core.user import current_superuser
-from app.crud import ticket_crud
+from app.crud import passenger_crud, routecost_crud, ticket_crud
 from app.schemas import TicketCreate, TicketDB, TicketResponse
+from app.services.discount import apply_discount
 
 router = APIRouter()
 
@@ -37,7 +38,22 @@ async def create_new_ticket(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Создание билета."""
-    #  добавить расчет стоимости (с учетом скидки)
+    ticket_in = ticket.model_dump()
+    passenger = await passenger_crud.get(ticket_in['id'], session)
+    discount_code = ''
+    age = datetime.now().year - passenger.birthday.year
+    if age < 2:
+        discount_code = 'РМГ'
+    elif age < 12:
+        discount_code = 'РБГ'
+    original_price = await routecost_crud.get_cost_by_cities(
+        session,
+        from_city_id=ticket_in['from_city_id'],
+        to_city_id=ticket_in['to_city_id']
+    )
+    final_price = await apply_discount(session, discount_code, original_price.cost)
+    ticket.discount_code = discount_code
+    ticket.final_price = final_price
     new_ticket = await ticket_crud.create(ticket, session)
     return new_ticket
 
@@ -57,7 +73,7 @@ async def get_ticket(
 
 
 @router.get(
-    '/{ticket_number}',
+    '/by_number/{ticket_number}',
     response_model=TicketResponse,
     dependencies=[Depends(current_superuser)],
 )
@@ -71,12 +87,12 @@ async def get_ticket_by_number(
 
 
 @router.get(
-    '/{date_flight}',
+    '/by_date_flight/{date_flight}',
     response_model=list[TicketResponse],
     dependencies=[Depends(current_superuser)],
 )
 async def get_ticket_by_date_flight(
-    date_flight: datetime,
+    date_flight: date,
     session: AsyncSession = Depends(get_async_session),
 ):
     """Получение билетов по дате вылета."""
@@ -87,7 +103,7 @@ async def get_ticket_by_date_flight(
 
 
 @router.get(
-    '/{flight_id}',
+    '/by_flight_id/{flight_id}',
     response_model=list[TicketResponse],
     dependencies=[Depends(current_superuser)],
 )

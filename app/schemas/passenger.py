@@ -18,6 +18,8 @@ from app.models.passenger import (
 
 
 class PassengerCreate(BaseModel):
+    """Схема создания пользователя."""
+
     name: str = Field(..., max_length=NAME_MAX_LENGHT)
     surname: str = Field(..., max_length=NAME_MAX_LENGHT)
     phone: str | None = Field(None, max_length=PHONE_MAX_LENGHT)
@@ -30,6 +32,7 @@ class PassengerCreate(BaseModel):
     @field_validator("birthday")
     @classmethod
     def validate_birthday(cls, values: date):
+        """Проверка даты рождения."""
         if values and values >= datetime.now().date():
             raise ValueError('Дата рождения должна быть в прошлом')
         delta = datetime.now().year - values.year
@@ -41,19 +44,25 @@ class PassengerCreate(BaseModel):
 
 
 class PassengerUpdate(PassengerCreate):
-    name: str | None = Field(None, min_length=1, max_length=NAME_MAX_LENGHT)
-    surname: str | None = Field(None, min_length=1, max_length=NAME_MAX_LENGHT)
+    """Схема обговления пользователя."""
+
+    name: str | None
+    surname: str | None
 
 
 class PassengerDB(PassengerCreate):
+    """Схема пользователя для вывода из БД."""
+
     id: int
 
     @computed_field
     def full_name(self) -> str:
+        """Вычисляемое поле полного имени."""
         return f"{self.name} {self.surname}"
 
     @computed_field
     def age(self) -> str:
+        """Вычисляемое поле возраста."""
         today = date.today()
         delta = relativedelta(today, self.birthday)
         return f"{delta.years} лет, {delta.months} месяцев и {delta.days} дней"

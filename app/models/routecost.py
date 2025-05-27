@@ -5,7 +5,6 @@ from app.core.db import Base
 
 
 class RouteCost(Base):
-    __tablename__ = 'route_cost'
     from_city_id = Column(Integer, ForeignKey('city.id'))
     to_city_id = Column(Integer, ForeignKey('city.id'))
     cost = Column(Float)

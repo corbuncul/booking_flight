@@ -28,7 +28,7 @@ async def get_all_passengers(
 
 
 @router.get(
-    '/{date}',
+    '/by_date_flight/{date}',
     response_model=list[PassengerDB],
     dependencies=[Depends(current_superuser)],
 )
