@@ -11,7 +11,7 @@ class TicketCreate(BaseModel):
     from_city_id: int
     to_city_id: int
     number: str | None = None
-    discount_code: str | None = None
+    discount_code: str | None = Field(None, exclude=True)
     final_price: float = Field(exclude=True)
     status: TicketStatus = Field(default=TicketStatus.BOOKED)
     created_at: datetime = Field(default_factory=datetime.now)
@@ -28,5 +28,6 @@ class TicketUpdate(BaseModel):
 
 class TicketDB(TicketCreate):
     id: int
+    discount_code: str | None
     final_price: float
     model_config = ConfigDict(extra='forbid', from_attributes=True)

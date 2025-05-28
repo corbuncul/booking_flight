@@ -1,5 +1,6 @@
 from datetime import date
 
+from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -41,10 +42,11 @@ async def create_new_ticket(
     ticket_in = ticket.model_dump()
     passenger = await passenger_crud.get(ticket_in['id'], session)
     discount_code = ''
-    age = datetime.now().year - passenger.birthday.year
-    if age < 2:
+    today = date.today()
+    age = relativedelta(today, passenger.birthday)
+    if age.years < 2:
         discount_code = 'РМГ'
-    elif age < 12:
+    elif age.years < 12:
         discount_code = 'РБГ'
     original_price = await routecost_crud.get_cost_by_cities(
         session,
