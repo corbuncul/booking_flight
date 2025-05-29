@@ -15,23 +15,23 @@ class ConfigBase(BaseSettings):
 class ConfigApp(ConfigBase):
     """Настройки приложения."""
 
-    model_config = SettingsConfigDict(env_prefix='AP_')
-    title: str = Field(default='Booking flight')
-    description: str = Field(default='Запись на рейсы из п. Пертоминск')
-    secret: SecretStr = Field(default='SECRET')
+    model_config = SettingsConfigDict(env_prefix="AP_")
+    title: str = Field(default="Booking flight")
+    description: str = Field(default="Запись на рейсы из п. Пертоминск")
+    secret_key: SecretStr = Field(default="SECRET")
 
 
 class ConfigDB(ConfigBase):
     """Настройки базы данных."""
 
-    model_config = SettingsConfigDict(env_prefix='DB_')
-    database_url: str = Field(default='sqlite+aiosqlite:///./fastapi.db')
+    model_config = SettingsConfigDict(env_prefix="DB_")
+    database_url: str = Field(default="sqlite+aiosqlite:///./fastapi.db")
 
 
 class ConfigSuperUser(ConfigBase):
     """Настройки для суперюзера."""
 
-    model_config = SettingsConfigDict(env_prefix='SU_')
+    model_config = SettingsConfigDict(env_prefix="SU_")
     superuser_email: Optional[EmailStr] = Field(default=None)
     superuser_password: Optional[SecretStr] = Field(default=None)
 

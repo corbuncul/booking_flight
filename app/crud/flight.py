@@ -4,8 +4,8 @@ from typing import Sequence
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Flight
 from app.crud import CRUDBase
+from app.models import Flight, FlightCity
 
 
 class CRUDFlight(CRUDBase):
@@ -65,6 +65,25 @@ class CRUDFlight(CRUDBase):
             query.where(self.model.board == board_number)
         db_flight = await session.execute(query)
         return db_flight.scalars().all()
+
+    async def get_flight_by_date_cities(
+        self,
+        session: AsyncSession,
+        date_flight: date,
+        from_city_id: int,
+        to_city_id: int,
+    ) -> Flight | None:
+        """Получение рейса по дате и городам."""
+        query = (
+            select(self.model)
+            .join(FlightCity)
+            .where(
+                self.model.date_flight == date_flight,
+                FlightCity.city_id.in_([from_city_id, to_city_id]),
+            )
+        )
+        result = await session.execute(query)
+        return result.scalars().first()
 
 
 flight_crud = CRUDFlight()

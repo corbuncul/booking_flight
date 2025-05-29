@@ -135,3 +135,5 @@ dmypy.json
 # Text file
 *.odt
 *.txt
+check_password.py
+check_db.py

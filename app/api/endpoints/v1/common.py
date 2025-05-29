@@ -1,9 +1,15 @@
 from fastapi import APIRouter
 
 from . import (
-    city_router, discount_router, flight_router,
-    flightcity_router, routecost_router, passenger_router,
-    ticket_router, user_router
+    booking,
+    city_router,
+    discount_router,
+    flight_router,
+    flightcity_router,
+    passenger_router,
+    routecost_router,
+    ticket_router,
+    user_router,
 )
 
 router = APIRouter()
@@ -37,3 +43,8 @@ router.include_router(
     tags=['Билеты'],
 )
 router.include_router(user_router)
+router.include_router(
+    booking.router,
+    prefix="/booking",
+    tags=["Бронирование"],
+)

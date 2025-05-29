@@ -4,10 +4,7 @@ from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
-from app.api.validators import (
-    check_ticket_exists,
-)
+from app.api.validators import check_ticket_exists
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud import passenger_crud, routecost_crud, ticket_crud
@@ -45,6 +42,7 @@ async def create_new_ticket(
     today = date.today()
     age = relativedelta(today, passenger.birthday)
     if age.years < 2:
+        # РМГ - Ребенок до 2 лет
         discount_code = 'РМГ'
     elif age.years < 12:
         discount_code = 'РБГ'
@@ -53,7 +51,9 @@ async def create_new_ticket(
         from_city_id=ticket_in['from_city_id'],
         to_city_id=ticket_in['to_city_id']
     )
-    final_price = await apply_discount(session, discount_code, original_price.cost)
+    final_price = await apply_discount(
+        session, discount_code, original_price.cost
+    )
     ticket.discount_code = discount_code
     ticket.final_price = final_price
     new_ticket = await ticket_crud.create(ticket, session)
@@ -123,7 +123,7 @@ async def get_ticket_by_flight(
     response_model=TicketDB,
     dependencies=[Depends(current_superuser)],
 )
-async def delete_passenger(
+async def delete_ticket(
     ticket_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
