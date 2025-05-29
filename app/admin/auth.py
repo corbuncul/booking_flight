@@ -47,7 +47,7 @@ class AdminAuth(AuthenticationBackend):
                         return False
 
                     # Проверяем пароль
-                    valid_password = self.password_helper.verify_password(
+                    valid_password = self.password_helper.verify_and_update(
                         password, user.hashed_password
                     )
                     if not valid_password:
