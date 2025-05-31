@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 4e6764d423f4
+Revision ID: f5b08272805c
 Revises: 
-Create Date: 2025-05-28 01:26:41.031868
+Create Date: 2025-06-01 00:41:12.259532
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4e6764d423f4'
+revision: str = 'f5b08272805c'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -56,18 +56,29 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
+    sa.Column('username', sa.String(length=20), nullable=True),
+    sa.Column('name', sa.String(length=20), nullable=False),
+    sa.Column('surname', sa.String(length=50), nullable=True),
+    sa.Column('tg_id', sa.BigInteger(), nullable=False),
+    sa.Column('tg_username', sa.String(length=50), nullable=False),
+    sa.Column('birthday', sa.Date(), nullable=False),
+    sa.Column('phone', sa.String(length=50), nullable=True),
     sa.Column('email', sa.String(length=320), nullable=False),
     sa.Column('hashed_password', sa.String(length=1024), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('is_superuser', sa.Boolean(), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('tg_id'),
+    sa.UniqueConstraint('tg_username'),
+    sa.UniqueConstraint('username')
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_table('flight_city',
     sa.Column('flight_id', sa.Integer(), nullable=True),
     sa.Column('city_id', sa.Integer(), nullable=True),
+    sa.Column('order', sa.Integer(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['city_id'], ['city.id'], ),
     sa.ForeignKeyConstraint(['flight_id'], ['flight.id'], ),

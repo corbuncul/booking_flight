@@ -1,85 +1,70 @@
-from typing import Optional
+import contextlib
+from typing import AsyncGenerator, Optional, Tuple
 
-from fastapi_users.password import PasswordHelper
+from fastapi import Request
+from fastapi.security import OAuth2PasswordRequestForm
 from sqladmin.authentication import AuthenticationBackend
-from starlette.requests import Request
-from starlette.responses import RedirectResponse
 
 from app.core.config import config
-from app.core.init_db import get_async_session_context, get_user_db_context
 from app.core.logger import logger
+from app.core.db import get_async_session
+from app.core.user import UserManager, get_jwt_strategy, get_user_db
+from app.models import User
 
-
+    
 class AdminAuth(AuthenticationBackend):
     """Аутентификация для административного интерфейса."""
 
-    def __init__(self):
-        try:
-            secret_key = config.app.secret_key.get_secret_value()
-            super().__init__(secret_key=secret_key)
-            self.password_helper = PasswordHelper()
-            logger.info("AdminAuth initialized successfully")
-        except Exception as e:
-            logger.error(f"Error initializing AdminAuth: {e}")
-            raise
+    def __init__(self) -> None:
+        """Метод инициализации класса AdminAuth."""
+        super().__init__(secret_key=config.app.secret_key.get_secret_value())
+        self.jwt_strategy = get_jwt_strategy()
 
-    async def login(self, request: Request) -> bool:
-        form = await request.form()
-        email = form.get("username")  # форма отправляет как username
-        password = form.get("password")
+    @contextlib.asynccontextmanager
+    async def get_user_manager(self) -> AsyncGenerator[UserManager, None]:
+        """Метод получения кастомного менеджера пользователей."""
+        async for session in get_async_session():
+            async for user_db in get_user_db(session):
+                yield UserManager(user_db)
 
-        if not email or not password:
-            logger.warning("Login attempt without email or password")
-            return False
-
-        try:
-            async with get_async_session_context() as session:
-                async with get_user_db_context(session) as user_db:
-                    # Получаем пользователя по email
-                    user = await user_db.get_by_email(email)
-
-                    if not user:
-                        logger.warning(f"User not found: {email}")
-                        return False
-
-                    if not user.is_superuser:
-                        logger.warning(f"Non-superuser login attempt: {email}")
-                        return False
-
-                    # Проверяем пароль
-                    valid_password = self.password_helper.verify_and_update(
-                        password, user.hashed_password
-                    )
-                    if not valid_password:
-                        logger.warning(f"Invalid password for user: {email}")
-                        return False
-
-                    logger.info(f"Successful login: {email}")
-                    request.session.update({"admin_user": email})
-                    return True
-
-        except Exception as e:
-            logger.error(f"Login error for {email}: {e}")
-            return False
+    async def authenticate_user(
+        self,
+        username: str,
+        password: str,
+    ) -> Tuple[Optional[User], Optional[str]]:
+        """Аутентификация пользователя по имени пользователя и паролю."""
+        async with self.get_user_manager() as user_manager:
+            credentials = OAuth2PasswordRequestForm(
+                username=username,
+                password=password,
+            )
+            user = await user_manager.authenticate(credentials)
+            if user and user.is_active:
+                token = await self.jwt_strategy.write_token(user)
+                logger.info(f'User {user} authenticate.')
+                return user, token
+            return None, None
 
     async def logout(self, request: Request) -> bool:
-        try:
-            admin_user = request.session.get("admin_user")
-            request.session.pop("admin_user", None)
-            logger.info(f"User logged out: {admin_user}")
-            return True
-        except Exception as e:
-            logger.error(f"Logout error: {e}")
-            return False
+        """Обработка выхода администратора."""
+        request.session.clear()
+        return True
 
-    async def authenticate(self, request: Request) -> Optional[RedirectResponse]:
+    async def authenticate(self, request: Request) -> bool:
+        """Проверка аутентификации администратора."""
+        token = request.session.get('access_token')
+        if not token:
+            return False
         try:
-            admin_user = request.session.get("admin_user")
-            if not admin_user:
-                logger.debug("No admin_user in session")
-                return RedirectResponse(request.url_for("admin:login"), status_code=302)
-            logger.debug(f"Authenticated: {admin_user}")
-            return None
+            async with self.get_user_manager() as user_manager:
+                user = await self.jwt_strategy.read_token(token, user_manager)
+                if user is None:
+                    logger.info(f'попытка входа {user}')
+                    return False
+                if user and user.is_superuser:
+                    logger.info(f'Пользователь {user} вошел.')
+                    return True
+                return False
         except Exception as e:
-            logger.error(f"Authentication error: {e}")
-            return RedirectResponse(request.url_for("admin:login"), status_code=302)
+            logger.error(f'Ошибка {e}')
+            return False

@@ -8,12 +8,12 @@ from .ticket import Ticket
 from .user import User
 
 __all__ = (
-    "City",
-    "Discount",
-    "Flight",
-    "FlightCity",
-    "Passenger",
-    "RouteCost",
-    "Ticket",
-    "User"
+    'City',
+    'Discount',
+    'Flight',
+    'FlightCity',
+    'Passenger',
+    'RouteCost',
+    'Ticket',
+    'User'
 )

@@ -13,13 +13,13 @@ from app.models import (
 )
 
 __all__ = (
-    "Base",
-    "City",
-    "Discount",
-    "Flight",
-    "FlightCity",
-    "Passenger",
-    "RouteCost",
-    "Ticket",
-    "User"
+    'Base',
+    'City',
+    'Discount',
+    'Flight',
+    'FlightCity',
+    'Passenger',
+    'RouteCost',
+    'Ticket',
+    'User'
 )

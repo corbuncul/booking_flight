@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
 from . import (
-    booking,
     city_router,
     discount_router,
     flight_router,
@@ -43,8 +42,3 @@ router.include_router(
     tags=['Билеты'],
 )
 router.include_router(user_router)
-router.include_router(
-    booking.router,
-    prefix="/booking",
-    tags=["Бронирование"],
-)

@@ -26,10 +26,10 @@ class PassengerCreate(BaseModel):
     email: EmailStr | None = Field(None, max_length=NAME_MAX_LENGHT)
     birthday: date | None
     doc_number: str | None = Field(None, max_length=DOC_MAX_LENGHT)
-    tg_id: str | None
+    tg_id: int | None
     model_config = ConfigDict(from_attributes=True, extra='forbid')
 
-    @field_validator("birthday")
+    @field_validator('birthday')
     @classmethod
     def validate_birthday(cls, values: date):
         """Проверка даты рождения."""
@@ -38,7 +38,7 @@ class PassengerCreate(BaseModel):
         delta = datetime.now().year - values.year
         if delta < 0 or delta > 100:
             raise ValueError(
-                "Возраст должен быть от 0 до 100 лет.",
+                'Возраст должен быть от 0 до 100 лет.',
             )
         return values
 
@@ -58,11 +58,11 @@ class PassengerDB(PassengerCreate):
     @computed_field
     def full_name(self) -> str:
         """Вычисляемое поле полного имени."""
-        return f"{self.name} {self.surname}"
+        return f'{self.name} {self.surname}'
 
     @computed_field
     def age(self) -> str:
         """Вычисляемое поле возраста."""
         today = date.today()
         delta = relativedelta(today, self.birthday)
-        return f"{delta.years} лет, {delta.months} месяцев и {delta.days} дней"
+        return f'{delta.years} лет, {delta.months} месяцев и {delta.days} дней'

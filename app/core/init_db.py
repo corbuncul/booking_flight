@@ -1,4 +1,5 @@
 import contextlib
+from datetime import date
 
 from fastapi_users.exceptions import UserAlreadyExists
 from pydantic import EmailStr
@@ -15,7 +16,18 @@ get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
 
 
 async def create_user(
-    email: EmailStr, password: str, is_superuser: bool = False
+    email: EmailStr,
+    password: str,
+    name: str,
+    tg_id: int,
+    tg_username: str,
+    birthday: date,
+    is_active: bool | None = True,
+    is_superuser: bool | None = False,
+    is_verified: bool | None = False,
+    username: str | None = None,
+    surname: str | None = None,
+    phone: str | None = None
 ):
     try:
         async with get_async_session_context() as session:
@@ -25,7 +37,16 @@ async def create_user(
                         UserCreate(
                             email=email,
                             password=password,
+                            name=name,
+                            surname=surname,
+                            username=username,
                             is_superuser=is_superuser,
+                            tg_id=tg_id,
+                            tg_username=tg_username,
+                            birthday=birthday,
+                            phone=phone,
+                            is_active=is_active,
+                            is_verified=is_verified
                         )
                     )
     except UserAlreadyExists:
@@ -34,11 +55,20 @@ async def create_user(
 
 async def create_first_superuser():
     if (
-        config.superuser.superuser_email is not None
-        and config.superuser.superuser_password is not None
+        config.superuser.email is not None
+        and config.superuser.password is not None
     ):
         await create_user(
-            email=config.superuser.superuser_email,
-            password=config.superuser.superuser_password.get_secret_value(),
+            email=config.superuser.email,
+            name=config.superuser.name,
+            surname=config.superuser.surname,
+            username=config.superuser.username,
+            password=config.superuser.password.get_secret_value(),
+            tg_id=config.superuser.tg_id,
+            tg_username=config.superuser.tg_username,
+            birthday=config.superuser.birthday,
+            phone=config.superuser.phone,
             is_superuser=True,
+            is_active=True,
+            is_verified=True,
         )

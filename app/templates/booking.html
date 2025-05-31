@@ -41,25 +41,32 @@
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="flight_date" class="form-label">Дата вылета</label>
-                    <input type="text" class="form-control" id="flight_date" name="flight_date" required>
+                    <label for="date_flight" class="form-label">Дата вылета</label>
+                    <input type="text" class="form-control" id="date_flight" name="date_flight" required>
                     <div class="invalid-feedback">
                         Пожалуйста, выберите дату вылета
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Номер телефона</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required pattern="+\d{11}">
+                    <div class="invalid-feedback">
+                        Номер телефона должен содержать + и 11 цифр
                     </div>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="last_name" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" required pattern="[А-Яа-яЁё\s-]{2,50}">
+                    <label for="surname" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control" id="surname" name="surname" required pattern="[А-Яа-яЁё\s-]{2,50}">
                     <div class="invalid-feedback">
                         Фамилия должна содержать только русские буквы, дефис и пробел (от 2 до 50 символов)
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="first_name" class="form-label">Имя</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" required pattern="[А-Яа-яЁё\s-]{2,50}">
+                    <label for="name" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="name" name="name" required pattern="[А-Яа-яЁё\s-]{2,50}">
                     <div class="invalid-feedback">
                         Имя должно содержать только русские буквы, дефис и пробел (от 2 до 50 символов)
                     </div>
@@ -68,17 +75,34 @@
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="birth_date" class="form-label">Дата рождения</label>
-                    <input type="text" class="form-control" id="birth_date" name="birth_date" required>
+                    <label for="birthday" class="form-label">Дата рождения</label>
+                    <input type="text" class="form-control" id="birthday" name="birthday" required>
                     <div class="invalid-feedback">
                         Пожалуйста, укажите дату рождения
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label for="document_number" class="form-label">Номер документа</label>
-                    <input type="text" class="form-control" id="document_number" name="document_number" required pattern="\d{10}">
+                    <label for="doc_number" class="form-label">Номер документа</label>
+                    <input type="text" class="form-control" id="doc_number" name="doc_number" required pattern="\d{10}">
                     <div class="invalid-feedback">
                         Номер документа должен содержать 10 цифр
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Электронная почта</label>
+                    <input type="text" class="form-control" id="email" name="email" required pattern="[A-Za-z@.\s-]{5,50}">
+                    <div class="invalid-feedback">
+                        Элетронная почта должна содержать только латинские буквы, @, _ и . (от 5 до 50 символов)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="tg_id" class="form-label">telegtam id</label>
+                    <input type="text" class="form-control" id="tg_id" name="tg_id" required pattern="\d{5,20}">
+                    <div class="invalid-feedback">
+                        telegram id должен содержать только цифры (от 5 до 20 цифр)
                     </div>
                 </div>
             </div>
@@ -93,9 +117,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Билет №{{ ticket.number }}</h5>
                     <p class="card-text">
-                        <strong>Пассажир:</strong> {{ ticket.passenger.last_name }} {{ ticket.passenger.first_name }}<br>
+                        <strong>Пассажир:</strong> {{ ticket.passenger.surname }} {{ ticket.passenger.name }}<br>
                         <strong>Маршрут:</strong> {{ ticket.from_city.name }} - {{ ticket.to_city.name }}<br>
-                        <strong>Дата вылета:</strong> {{ ticket.flight_date }}<br>
+                        <strong>Дата вылета:</strong> {{ ticket.date_flight }}<br>
                         <strong>Стоимость:</strong> {{ ticket.final_price }} руб.<br>
                         {% if ticket.discount_code %}
                         <strong>Применена скидка:</strong> {{ ticket.discount_code }}<br>
@@ -112,7 +136,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
     <script>
         // Инициализация календаря для даты вылета
-        flatpickr("#flight_date", {
+        flatpickr("#date_flight", {
             locale: "ru",
             dateFormat: "Y-m-d",
             minDate: "today",
@@ -120,7 +144,7 @@
         });
 
         // Инициализация календаря для даты рождения
-        flatpickr("#birth_date", {
+        flatpickr("#birthday", {
             locale: "ru",
             dateFormat: "Y-m-d",
             maxDate: "today",

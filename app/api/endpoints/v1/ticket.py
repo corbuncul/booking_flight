@@ -37,7 +37,7 @@ async def create_new_ticket(
 ):
     """Создание билета."""
     ticket_in = ticket.model_dump()
-    passenger = await passenger_crud.get(ticket_in['id'], session)
+    passenger = await passenger_crud.get(ticket_in['passenger_id'], session)
     discount_code = ''
     today = date.today()
     age = relativedelta(today, passenger.birthday)
