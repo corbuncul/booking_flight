@@ -57,6 +57,8 @@ async def create_booking(
             status_code=400,
             detail=('Города отправления и прибытия должны различаться')
         )
+    #  получение городов для формы
+    cities = await city_crud.get_all(session)
 
     # Создание пассажира
     passenger_data = PassengerCreate(
@@ -69,14 +71,14 @@ async def create_booking(
         phone=phone,
     )
     passenger = await passenger_crud.create(passenger_data, session)
-    logger.info(f'Создан пассажир {passenger}')
+    logger.info('Создан пассажир %s', passenger)
 
     # Получение подходящего рейса
     flight = await flight_crud.get_flight_by_date_cities(
         session, date_flight, from_city, to_city
     )
     if not flight:
-        logger.error(f'Нет доступных рейсов на указанную дату {date_flight}')
+        logger.error('Нет доступных рейсов на указанную дату %s', date_flight)
         raise HTTPException(
             status_code=404, detail='Нет доступных рейсов на указанную дату'
         )
@@ -94,11 +96,13 @@ async def create_booking(
         from_city_id=from_city,
         to_city_id=to_city
     )
+    logger.info('Стоимость перелета %s', original_price)
+    if discount_code != '':
+        logger.info('Применена скидка %s', discount_code)
     final_price = await apply_discount(
         session, discount_code, original_price.cost
     )
-    if discount_code != '':
-        logger.info(f'Применена скидка {discount_code}')
+    logger.info('Итоговая стоимость билета %s', final_price)
     # Создание билета
     ticket_data = TicketCreate(
         passenger_id=passenger.id,
@@ -111,12 +115,16 @@ async def create_booking(
         created_at=datetime.now(),
     )
     ticket = await ticket_crud.create(ticket_data, session)
-    logger.info(f'Создана запись {ticket}')
-
-    # Получение списка городов для формы
-    cities = await city_crud.get_all(session)
+    db_ticket, *_ = await ticket_crud.save_changes(
+        [ticket, passenger], session
+    )
+    logger.info('Создана запись %s', db_ticket)
 
     return templates.TemplateResponse(
         'booking.html',
-        {'request': request, 'cities': cities, 'ticket': ticket}
+        {
+            'request': request,
+            'cities': cities,
+            'ticket': db_ticket
+        }
     )

@@ -88,7 +88,8 @@ async def create_new_city(
 ):
     """Создание населенного пункта. Только для суперюзеров."""
     new_city = await city_crud.create(city, session)
-    return new_city
+    city_db, *_ = await city_crud.save_changes([new_city,], session)
+    return city_db
 
 
 @router.patch(

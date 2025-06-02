@@ -89,17 +89,25 @@ class UserAdmin(ModelView, model=User):
     """Класс определяющий настройки админзоны модели User."""
 
     column_list = [
-        'username',
-        'name',
-        'surname',
-        'tg_username',
+        User.id,
+        User.username,
+        User.name,
+        User.surname,
+        User.tg_username,
     ]
     # can_create = False
     # can_edit = False
     name = 'Пользователь'
     name_plural = 'Пользователи'
     icon = 'fa-solid fa-user'
-    column_labels = {'hashed_password': 'password'}
+    column_labels = {
+        User.id: 'ID',
+        User.username: 'Ник',
+        User.name: 'Имя',
+        User.surname: 'Фамилия',
+        User.tg_username: 'Ник в телеграм',
+        User.hashed_password: 'Пароль'
+    }
     column_details_list = [
         'username',
         'name',
@@ -236,8 +244,8 @@ class CityAdmin(ModelView, model=City):
     name = 'Город'
     name_plural = 'Города'
     icon = 'fa-solid fa-city'
-    column_list = ['id', 'code', 'name']
-    column_labels = {'id': 'ID', 'code': 'Код', 'name': 'Название'}
+    column_list = [City.id, City.code, City.name]
+    column_labels = {City.id: 'ID', City.code: 'Код', City.name: 'Название'}
 
 
 class FlightAdmin(ModelView, model=Flight):
@@ -247,18 +255,18 @@ class FlightAdmin(ModelView, model=Flight):
     name_plural = 'Рейсы'
     icon = 'fa-solid fa-plane'
     column_list = [
-        'id',
-        'number',
-        'date_flight',
-        'board',
-        'status',
+        Flight.id,
+        Flight.number,
+        Flight.date_flight,
+        Flight.board,
+        Flight.status,
     ]
     column_labels = {
-        'id': 'ID',
-        'number': 'Номер',
-        'date_flight': 'Дата',
-        'board': 'Борт',
-        'status': 'Статус',
+        Flight.id: 'ID',
+        Flight.number: 'Номер',
+        Flight.date_flight: 'Дата',
+        Flight.board: 'Борт',
+        Flight.status: 'Статус',
     }
 
 
@@ -269,22 +277,22 @@ class PassengerAdmin(ModelView, model=Passenger):
     name_plural = 'Пассажиры'
     icon = 'fa-solid fa-users'
     column_list = [
-        'id',
-        'name',
-        'surname',
-        'birthday',
-        'doc_number',
-        'phone',
-        'email',
+        Passenger.id,
+        Passenger.name,
+        Passenger.surname,
+        Passenger.birthday,
+        Passenger.doc_number,
+        Passenger.phone,
+        Passenger.email,
     ]
     column_labels = {
-        'id': 'ID',
-        'name': 'Имя',
-        'surname': 'Фамилия',
-        'birthday': 'Дата рождения',
-        'doc_number': 'Номер документа',
-        'phone': 'Телефон',
-        'email': 'Email',
+        Passenger.id: 'ID',
+        Passenger.name: 'Имя',
+        Passenger.surname: 'Фамилия',
+        Passenger.birthday: 'Дата рождения',
+        Passenger.doc_number: 'Номер документа',
+        Passenger.phone: 'Телефон',
+        Passenger.email: 'Email',
     }
 
 
@@ -295,24 +303,24 @@ class TicketAdmin(ModelView, model=Ticket):
     name_plural = 'Билеты'
     icon = 'fa-solid fa-ticket'
     column_list = [
-        'id',
-        'number',
-        'passenger_id',
-        'flight_id',
-        'status',
-        'final_price',
-        'created_at',
-        'paid_date',
+        Ticket.id,
+        Ticket.number,
+        Ticket.passenger_id,
+        Ticket.flight_id,
+        Ticket.status,
+        Ticket.final_price,
+        Ticket.created_at,
+        Ticket.paid_date,
     ]
     column_labels = {
-        'id': 'ID',
-        'number': 'Номер',
-        'passenger_id': 'Пассажир',
-        'flight_id': 'Рейс',
-        'status': 'Статус',
-        'final_price': 'Цена',
-        'created_at': 'Создан',
-        'paid_date': 'Оплачен',
+        Ticket.id: 'ID',
+        Ticket.number: 'Номер',
+        Ticket.passenger_id: 'Пассажир',
+        Ticket.flight_id: 'Рейс',
+        Ticket.status: 'Статус',
+        Ticket.final_price: 'Цена',
+        Ticket.created_at: 'Создан',
+        Ticket.paid_date: 'Оплачен',
     }
 
 
@@ -323,16 +331,16 @@ class RouteCostAdmin(ModelView, model=RouteCost):
     name_plural = 'Стоимость маршрутов'
     icon = 'fa-solid fa-money-bill'
     column_list = [
-        'id',
-        'from_city_id',
-        'to_city_id',
-        'cost',
+        RouteCost.id,
+        RouteCost.from_city_id,
+        RouteCost.to_city_id,
+        RouteCost.cost,
     ]
     column_labels = {
-        'id': 'ID',
-        'from_city_id': 'Откуда',
-        'to_city_id': 'Куда',
-        'cost': 'Стоимость',
+        RouteCost.id: 'ID',
+        RouteCost.from_city_id: 'Откуда',
+        RouteCost.to_city_id: 'Куда',
+        RouteCost.cost: 'Стоимость',
     }
 
 
@@ -343,16 +351,16 @@ class DiscountAdmin(ModelView, model=Discount):
     name_plural = 'Скидки'
     icon = 'fa-solid fa-percent'
     column_list = [
-        'id',
-        'code',
-        'discount_percent',
-        'is_active',
+        Discount.id,
+        Discount.code,
+        Discount.discount_percent,
+        Discount.is_active,
     ]
     column_labels = {
-        'id': 'ID',
-        'code': 'Код',
-        'discount_percent': 'Процент',
-        'is_active': 'Активна',
+        Discount.id: 'ID',
+        Discount.code: 'Код',
+        Discount.discount_percent: 'Процент',
+        Discount.is_active: 'Активна',
     }
 
 
@@ -363,14 +371,14 @@ class FlightCityAdmin(ModelView, model=FlightCity):
     name_plural = 'Города в рейсах'
     icon = 'fa-solid fa-plane-arrival'
     column_list = [
-        'id',
-        'flight_id',
-        'city_id',
-        'order',
+        FlightCity.id,
+        FlightCity.flight_id,
+        FlightCity.city_id,
+        FlightCity.order,
     ]
     column_labels = {
-        'id': 'ID',
-        'flight_id': 'Рейс',
-        'city_id': 'Город',
-        'order': 'Порядок',
+        FlightCity.id: 'ID',
+        FlightCity.flight_id: 'Рейс',
+        FlightCity.city_id: 'Город',
+        FlightCity.order: 'Порядок',
     }

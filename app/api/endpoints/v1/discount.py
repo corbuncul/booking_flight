@@ -64,7 +64,10 @@ async def create_new_discount(
         session=session, discount_code=discount.code
     )
     new_discount = await discount_crud.create(discount, session)
-    return new_discount
+    discount_db, *_ = await discount_crud.save_changes(
+        [new_discount,], session
+    )
+    return discount_db
 
 
 @router.patch(

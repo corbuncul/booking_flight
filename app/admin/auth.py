@@ -11,7 +11,7 @@ from app.core.db import get_async_session
 from app.core.user import UserManager, get_jwt_strategy, get_user_db
 from app.models import User
 
-    
+
 class AdminAuth(AuthenticationBackend):
     """Аутентификация для административного интерфейса."""
 
@@ -41,9 +41,20 @@ class AdminAuth(AuthenticationBackend):
             user = await user_manager.authenticate(credentials)
             if user and user.is_active:
                 token = await self.jwt_strategy.write_token(user)
-                logger.info(f'User {user} authenticate.')
+                logger.info('User %s authenticate.', user)
                 return user, token
             return None, None
+
+    async def login(self, request: Request):
+        form = await request.form()
+        username = form["username"]
+        password = form["password"]
+
+        user, token = await self.authenticate_user(username, password)
+        if user and user.is_superuser:
+            request.session.update({"access_token": token})
+            return True
+        return False
 
     async def logout(self, request: Request) -> bool:
         """Обработка выхода администратора."""
@@ -59,12 +70,12 @@ class AdminAuth(AuthenticationBackend):
             async with self.get_user_manager() as user_manager:
                 user = await self.jwt_strategy.read_token(token, user_manager)
                 if user is None:
-                    logger.info(f'попытка входа {user}')
+                    logger.info('попытка входа.')
                     return False
                 if user and user.is_superuser:
-                    logger.info(f'Пользователь {user} вошел.')
+                    logger.info('Пользователь %s вошел.', user)
                     return True
                 return False
         except Exception as e:
-            logger.error(f'Ошибка {e}')
+            logger.error('Ошибка %s', e)
             return False

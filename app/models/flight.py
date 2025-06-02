@@ -16,7 +16,10 @@ class Flight(Base):
     time_flight = Column(Time, nullable=False)
     status = Column(Enum(FlightStatus))
     cities = relationship(
-        'City', secondary='flight_city', back_populates='flights'
+        'City',
+        secondary='flight_city',
+        back_populates='flights',
+        lazy='joined'
     )
 
     def __repr__(self):

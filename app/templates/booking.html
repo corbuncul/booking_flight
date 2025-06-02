@@ -119,7 +119,7 @@
                     <p class="card-text">
                         <strong>Пассажир:</strong> {{ ticket.passenger.surname }} {{ ticket.passenger.name }}<br>
                         <strong>Маршрут:</strong> {{ ticket.from_city.name }} - {{ ticket.to_city.name }}<br>
-                        <strong>Дата вылета:</strong> {{ ticket.date_flight }}<br>
+                        <strong>Дата вылета:</strong> {{ ticket.flight.date_flight }}<br>
                         <strong>Стоимость:</strong> {{ ticket.final_price }} руб.<br>
                         {% if ticket.discount_code %}
                         <strong>Применена скидка:</strong> {{ ticket.discount_code }}<br>

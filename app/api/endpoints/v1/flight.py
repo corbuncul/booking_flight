@@ -61,7 +61,9 @@ async def create_new_flight(
 ):
     """Создание рейса. Только для суперюзеров."""
     await check_flight_duplicate(session, flight.number, flight.date_flight)
-    return await flight_crud.create(flight, session)
+    new_flight = await flight_crud.create(flight, session)
+    db_flight, *_ = await flight_crud.save_changes([new_flight,], session)
+    return db_flight
 
 
 @router.delete(

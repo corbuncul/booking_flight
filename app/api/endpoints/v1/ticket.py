@@ -45,6 +45,7 @@ async def create_new_ticket(
         # РМГ - Ребенок до 2 лет
         discount_code = 'РМГ'
     elif age.years < 12:
+        #  РБГ - ребенок до 12 лет
         discount_code = 'РБГ'
     original_price = await routecost_crud.get_cost_by_cities(
         session,
@@ -57,7 +58,8 @@ async def create_new_ticket(
     ticket.discount_code = discount_code
     ticket.final_price = final_price
     new_ticket = await ticket_crud.create(ticket, session)
-    return new_ticket
+    db_ticket, *_ = await ticket_crud.save_changes([new_ticket,], session)
+    return db_ticket
 
 
 @router.get(

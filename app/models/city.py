@@ -9,7 +9,10 @@ class City(Base):
     code = Column(String(CODE_MAX_LENGHT), unique=True, index=True)
     name = Column(String(NAME_MAX_LENGHT))
     flights = relationship(
-        'Flight', secondary='flight_city', back_populates='cities'
+        'Flight',
+        secondary='flight_city',
+        back_populates='cities',
+        lazy='joined'
     )
 
     def __repr__(self):

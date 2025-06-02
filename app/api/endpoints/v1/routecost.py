@@ -43,7 +43,10 @@ async def create_new_route(
 ):
     """Создание маршрута. Только для суперюзеров."""
     new_routecost = await routecost_crud.create(routecost, session)
-    return new_routecost
+    db_routecost, *_ = await routecost_crud.save_changes(
+        [new_routecost,], session
+    )
+    return db_routecost
 
 
 @router.patch(

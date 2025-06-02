@@ -67,7 +67,10 @@ async def create_new_passener(
 ):
     """Создание пассажира. Только для суперюзеров."""
     new_passenger = await passenger_crud.create(passenger, session)
-    return new_passenger
+    db_passenger, *_ = await passenger_crud.save_changes(
+        [new_passenger,], session
+    )
+    return db_passenger
 
 
 @router.patch(

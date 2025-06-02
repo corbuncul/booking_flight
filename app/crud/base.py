@@ -30,7 +30,7 @@ class CRUDBase(Generic[T]):
         db_obj = await session.execute(
             select(self.model).where(self.model.id == obj_id)
         )
-        return db_obj.scalars().first()
+        return db_obj.unique().scalars().first()
 
     async def get_by_attribute(
             self,
@@ -43,7 +43,7 @@ class CRUDBase(Generic[T]):
         db_obj = await session.execute(
             select(self.model).where(attr == attr_value),
         )
-        return db_obj.scalars().first()
+        return db_obj.unique().scalars().first()
 
     async def find_one_or_none(
         self,
@@ -59,7 +59,7 @@ class CRUDBase(Generic[T]):
     async def get_all(self, session: AsyncSession) -> Sequence[T]:
         """Получение всех объектов."""
         db_objs = await session.execute(select(self.model))
-        return db_objs.scalars().all()
+        return db_objs.unique().scalars().all()
 
     async def create(
         self,
@@ -73,7 +73,7 @@ class CRUDBase(Generic[T]):
             obj_in_data['user_id'] = user.id
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
-        await session.commit()
+        await session.flush()
         await session.refresh(db_obj)
         return db_obj
 
@@ -103,3 +103,15 @@ class CRUDBase(Generic[T]):
         await session.delete(db_obj)
         await session.commit()
         return db_obj
+
+    async def save_changes(
+        self,
+        objs: list[T],
+        session: AsyncSession
+    ) -> list[T]:
+        """Сохранение объекта."""
+        session.add_all(objs)
+        await session.commit()
+        for obj in objs:
+            await session.refresh(obj)
+        return objs

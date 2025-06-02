@@ -53,7 +53,10 @@ async def create_new_flightcity(
         city_id=flightcity.city_id,
     )
     new_flightcity = await flightcity_crud.create(flightcity, session)
-    return new_flightcity
+    db_flightcity, *_ = await flightcity_crud.save_changes(
+        [new_flightcity,], session
+    )
+    return db_flightcity
 
 
 @router.patch(

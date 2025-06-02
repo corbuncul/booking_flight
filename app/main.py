@@ -38,7 +38,7 @@ app = FastAPI(
 admin = Admin(
     app,
     engine,
-    #  authentication_backend=AdminAuth(),
+    authentication_backend=AdminAuth(),
     title='Администрирование',
 )
 
