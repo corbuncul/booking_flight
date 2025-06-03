@@ -115,7 +115,11 @@
             <h3>Информация о билете</h3>
             <div class="card">
                 <div class="card-body">
+                    {% if ticket.number %}
                     <h5 class="card-title">Билет №{{ ticket.number }}</h5>
+                    {% else %}
+                    <h5 class="card-title">Бронь создана.</h5>
+                    {% endif %}
                     <p class="card-text">
                         <strong>Пассажир:</strong> {{ ticket.passenger.surname }} {{ ticket.passenger.name }}<br>
                         <strong>Маршрут:</strong> {{ ticket.from_city.name }} - {{ ticket.to_city.name }}<br>
