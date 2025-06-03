@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import (
+    check_future_date_flight,
     check_flight_duplicate,
     check_flight_exists,
 )
@@ -30,6 +31,17 @@ async def get_all_flight(
 ):
     """Список всех рейсов."""
     return await flight_crud.get_all(session)
+
+
+@router.get(
+    '/future',
+    response_model=list[FlightDB],
+)
+async def get_future_flight(
+    session: AsyncSession = Depends(get_async_session),
+):
+    """Список всех будущих рейсов."""
+    return await flight_crud.get_future(session)
 
 
 @router.get(
@@ -61,6 +73,7 @@ async def create_new_flight(
 ):
     """Создание рейса. Только для суперюзеров."""
     await check_flight_duplicate(session, flight.number, flight.date_flight)
+    check_future_date_flight(flight.date_flight)
     new_flight = await flight_crud.create(flight, session)
     db_flight, *_ = await flight_crud.save_changes([new_flight,], session)
     return db_flight
@@ -104,6 +117,7 @@ async def partially_update_flight(
         )
 
     if obj_in.date_flight is not None:
+        check_future_date_flight(obj_in.date_flight)
         await check_flight_duplicate(
             session, flight.number, obj_in.date_flight
         )

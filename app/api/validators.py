@@ -102,6 +102,18 @@ async def check_flight_duplicate(
         )
 
 
+def check_future_date_flight(date_flight: date) -> None:
+    """Проверка даты полета.
+
+    Проверяет дату рейса, что она не позднее чем сегодня.
+    """
+    if date_flight < date.today():
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail='Дата создания рейса должна быть не позднее сегодня!'
+        )
+
+
 async def check_flight_exists(
     session: AsyncSession,
     flight_id: int,

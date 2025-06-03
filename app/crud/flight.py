@@ -13,6 +13,16 @@ class CRUDFlight(CRUDBase):
 
     model = Flight
 
+    async def get_future(
+        self, session: AsyncSession
+    ) -> Sequence[Flight] | None:
+        """Получение будущих рейсов."""
+
+        db_flights = await session.execute(
+            select(self.model).where(self.model.date_flight >= date.today())
+        )
+        return db_flights.scalars().all()
+
     async def get_flights_by_date(
         self, session: AsyncSession, date_flight: date
     ) -> Sequence[Flight] | None:
@@ -31,6 +41,7 @@ class CRUDFlight(CRUDBase):
         db_flights = await session.execute(
             select(self.model).where(
                 self.model.number == number,
+                self.model.date_flight >= date.today()
             )
         )
         return db_flights.scalars().all()
