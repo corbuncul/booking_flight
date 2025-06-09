@@ -35,10 +35,8 @@ class PasswordSuperUserRequired:
         """Валидация данных формы."""
         is_superuser = getattr(form, 'is_superuser').data
 
-        if is_superuser and field.data == ' ':
+        if is_superuser and field.data == '':
             message = field.gettext('Для суперпользователя пароль обязятелен!')
-        elif is_superuser is False and field.data != ' ':
-            message = field.gettext('У обычного пользователя пароль - пробел!')
         else:
             message = self.message
 
@@ -58,10 +56,8 @@ class UsernameSuperUserRequired:
         """Валидация данных формы."""
         is_superuser = getattr(form, 'is_superuser').data
 
-        if is_superuser and field.data == ' ':
+        if is_superuser and field.data == '':
             message = field.gettext('Для суперпользователя username обязятелен!')
-        elif is_superuser is False and field.data != ' ':
-            message = field.gettext('Для обычного пользователя username не нужен!')
         else:
             message = self.message
 

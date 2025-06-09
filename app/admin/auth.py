@@ -73,7 +73,7 @@ class AdminAuth(AuthenticationBackend):
                     logger.info('попытка входа.')
                     return False
                 if user and user.is_superuser:
-                    logger.info('Пользователь %s вошел.', user)
+                    #  logger.info('Пользователь %s вошел.', user)
                     return True
                 return False
         except Exception as e:

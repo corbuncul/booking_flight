@@ -6,3 +6,4 @@ from .flightcity import flightcity_crud  # noqa: F401
 from .passenger import passenger_crud  # noqa: F401
 from .routecost import routecost_crud  # noqa: F401
 from .ticket import ticket_crud  # noqa: F401
+from .user import user_crud  # noqa: F401

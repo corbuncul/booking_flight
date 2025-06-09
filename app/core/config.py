@@ -28,6 +28,15 @@ class ConfigDB(ConfigBase):
     database_url: str = Field(default='sqlite+aiosqlite:///./fastapi.db')
 
 
+class ConfigBot(ConfigBase):
+    """Настройка бота."""
+
+    model_config = SettingsConfigDict(env_prefix='BOT_')
+    token: SecretStr = Field(default=None)
+    username: str = Field(default='BOT')
+    name: str = Field(default='BOT')
+
+
 class ConfigSuperUser(ConfigBase):
     """Настройки для суперюзера."""
 
@@ -47,6 +56,7 @@ class Config(BaseSettings):
     """Все настройки приложения."""
 
     app: ConfigApp = Field(default_factory=ConfigApp)
+    bot: ConfigBot = Field(default=ConfigBot)
     db: ConfigDB = Field(default_factory=ConfigDB)
     superuser: ConfigSuperUser = Field(default_factory=ConfigSuperUser)
 
