@@ -56,7 +56,7 @@ class Config(BaseSettings):
     """Все настройки приложения."""
 
     app: ConfigApp = Field(default_factory=ConfigApp)
-    bot: ConfigBot = Field(default=ConfigBot)
+    bot: ConfigBot = Field(default_factory=ConfigBot)
     db: ConfigDB = Field(default_factory=ConfigDB)
     superuser: ConfigSuperUser = Field(default_factory=ConfigSuperUser)
 

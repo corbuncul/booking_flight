@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import (
     DeclarativeBase,
     declared_attr,
-    #  sessionmaker
+    sessionmaker
 )
 
 from app.core.config import config
@@ -58,7 +58,7 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 engine = create_async_engine(config.db.database_url)
 
-AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession)
+AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
 
 async def get_async_session():
@@ -70,7 +70,7 @@ def connection():
     def decorator(method):
         @wraps(method)
         async def wrapper(*args, **kwargs):
-            async with get_async_session() as session:
+            async with AsyncSessionLocal() as session:
                 try:
                     return await method(*args, session=session, **kwargs)
                 except Exception as e:
