@@ -9,7 +9,7 @@ from app.crud import CRUDBase
 from app.models import Passenger
 
 
-class CRUDPassenger(CRUDBase):
+class CRUDPassenger(CRUDBase[Passenger]):
     """Класс для CRUD модели Passenger."""
 
     model = Passenger

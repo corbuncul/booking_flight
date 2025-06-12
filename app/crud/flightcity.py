@@ -7,7 +7,7 @@ from app.crud import CRUDBase
 from app.models import FlightCity
 
 
-class CRUDFlightCity(CRUDBase):
+class CRUDFlightCity(CRUDBase[FlightCity]):
     """Класс для CRUD модели FlightCity."""
 
     model = FlightCity

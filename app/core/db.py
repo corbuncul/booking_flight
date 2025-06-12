@@ -1,16 +1,17 @@
 from datetime import datetime
 from functools import wraps
 
-from sqlalchemy import Column, Integer, inspect
+from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import (
     AsyncAttrs,
     AsyncSession,
-    async_sessionmaker,
     create_async_engine
 )
 from sqlalchemy.orm import (
     DeclarativeBase,
     declared_attr,
+    Mapped,
+    mapped_column,
     sessionmaker
 )
 
@@ -21,7 +22,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     """Базовый класс для моделей."""
 
     __abstract__ = True
-    id = Column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
 
     @declared_attr.directive
     @classmethod

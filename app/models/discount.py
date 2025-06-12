@@ -1,10 +1,16 @@
-from sqlalchemy import Column, String, Float, Boolean
+from sqlalchemy import String
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column
+)
 
 from app.core.constants import CODE_MAX_LENGHT
 from app.core.db import Base
 
 
 class Discount(Base):
-    code = Column(String(CODE_MAX_LENGHT), unique=True, index=True)
-    discount_percent = Column(Float)
-    is_active = Column(Boolean, default=True)
+    code: Mapped[str] = mapped_column(
+        String(CODE_MAX_LENGHT), unique=True, index=True
+    )
+    discount_percent: Mapped[float]
+    is_active: Mapped[bool] = mapped_column(default=True)

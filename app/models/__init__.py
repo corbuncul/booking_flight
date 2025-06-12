@@ -1,7 +1,5 @@
-from .city import City
+from .city_flight import City, Flight, FlightCity
 from .discount import Discount
-from .flight import Flight
-from .flightcity import FlightCity
 from .passenger import Passenger
 from .routecost import RouteCost
 from .ticket import Ticket

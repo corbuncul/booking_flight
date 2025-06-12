@@ -5,7 +5,7 @@ from app.crud import CRUDBase
 from app.models import Discount
 
 
-class CRUDDiscount(CRUDBase):
+class CRUDDiscount(CRUDBase[Discount]):
     """Класс для CRUD модели Discount."""
 
     model = Discount

@@ -5,7 +5,7 @@ from app.models import RouteCost
 from app.crud import CRUDBase
 
 
-class CRUDRouteCost(CRUDBase):
+class CRUDRouteCost(CRUDBase[RouteCost]):
     """Класс для CRUD модели RouteCost."""
 
     model = RouteCost

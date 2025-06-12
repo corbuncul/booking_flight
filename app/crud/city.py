@@ -5,7 +5,7 @@ from app.crud import CRUDBase
 from app.models import City
 
 
-class CRUDCity(CRUDBase):
+class CRUDCity(CRUDBase[City]):
     """Класс для CRUD модели City."""
 
     model = City

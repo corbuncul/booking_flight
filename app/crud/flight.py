@@ -8,7 +8,7 @@ from app.crud import CRUDBase
 from app.models import Flight, FlightCity
 
 
-class CRUDFlight(CRUDBase):
+class CRUDFlight(CRUDBase[Flight]):
     """Класс для CRUD модели Flight."""
 
     model = Flight

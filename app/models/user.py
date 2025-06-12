@@ -3,8 +3,12 @@
 from datetime import date, datetime
 
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import BigInteger, Column, Date, String
-from sqlalchemy.orm import validates
+from sqlalchemy import BigInteger, String
+from sqlalchemy.orm import (
+    validates,
+    Mapped,
+    mapped_column,
+)
 
 from app.core.db import Base
 
@@ -12,13 +16,13 @@ from app.core.db import Base
 class User(SQLAlchemyBaseUserTable[int], Base):
     """Класс модели пользователей."""
 
-    username = Column(String(20), nullable=True, unique=True)
-    name = Column(String(20), nullable=False)
-    surname = Column(String(50), nullable=True)
-    tg_id = Column(BigInteger, unique=True, nullable=False)
-    tg_username = Column(String(50), unique=True, nullable=False)
-    birthday = Column(Date, nullable=False)
-    phone = Column(String(50), nullable=True)
+    username: Mapped[str] = mapped_column(String(20), unique=True)
+    name: Mapped[str] = mapped_column(String(20))
+    surname: Mapped[str] = mapped_column(String(50))
+    tg_id: Mapped[int] = mapped_column(BigInteger, unique=True)
+    tg_username: Mapped[str] = mapped_column(String(50), unique=True)
+    birthday: Mapped[date]
+    phone: Mapped[str] = mapped_column(String(50), nullable=True)
 
     @validates('username')
     def validate_username(self, key: str, username: str) -> str:

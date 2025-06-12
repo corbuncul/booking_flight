@@ -8,7 +8,7 @@ from app.crud.filters import UserFilter
 from app.models import User
 
 
-class CRUDUser(CRUDBase):
+class CRUDUser(CRUDBase[User]):
     """Класс запросов к БД, связанные с пользователями."""
 
     model = User
