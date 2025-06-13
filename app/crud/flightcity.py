@@ -44,12 +44,12 @@ class CRUDFlightCity(CRUDBase[FlightCity]):
                 self.model.city_id == city_id,
             )
         )
-        return db_flightcity.scalars().first()
+        return db_flightcity.scalars().one_or_none()
 
     async def get_max_order(
         self, session: AsyncSession, flight_id: int
     ) -> int:
-        """Получение максимального порядкового номера для рейса."""
+        """Получение максимального порядкового номера нас. пункта для рейса."""
         result = await session.execute(
             select(self.model.order)
             .where(self.model.flight_id == flight_id)

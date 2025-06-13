@@ -32,16 +32,16 @@ class Ticket(Base):
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     paid_date: Mapped[datetime] = mapped_column(nullable=True)
     passenger: Mapped['Passenger'] = relationship(
-        'Passenger', backref='tickets', lazy='joined'
+        backref='tickets', lazy='selectin'
     )
     flight: Mapped['Flight'] = relationship(
-        'Flight', backref='tickets', lazy='joined'
+        'Flight', backref='tickets', lazy='selectin'
     )
     from_city: Mapped['City'] = relationship(
-        'City', foreign_keys=[from_city_id], lazy='joined'
+        'City', foreign_keys=[from_city_id], lazy='selectin'
     )
     to_city: Mapped['City'] = relationship(
-        'City', foreign_keys=[to_city_id], lazy='joined'
+        'City', foreign_keys=[to_city_id], lazy='selectin'
     )
 
     def __repr__(self):

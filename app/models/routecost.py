@@ -17,13 +17,13 @@ class RouteCost(Base):
         'City',
         foreign_keys=[from_city_id],
         backref='outbound_routes',
-        lazy='joined'
+        lazy='selectin'
     )
     to_city: Mapped[list['City']] = relationship(
         'City',
         foreign_keys=[to_city_id],
         backref='inbound_routes',
-        lazy='joined'
+        lazy='selectin'
     )
 
     def __repr__(self):

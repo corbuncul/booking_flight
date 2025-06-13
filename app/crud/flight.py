@@ -19,7 +19,9 @@ class CRUDFlight(CRUDBase[Flight]):
         """Получение будущих рейсов."""
 
         db_flights = await session.execute(
-            select(self.model).where(self.model.date_flight >= date.today())
+            select(self.model)
+            .where(self.model.date_flight >= date.today())
+            .order_by(self.model.date_flight)
         )
         return db_flights.scalars().all()
 
@@ -39,10 +41,12 @@ class CRUDFlight(CRUDBase[Flight]):
         """Получение рейсов по номеру рейса."""
 
         db_flights = await session.execute(
-            select(self.model).where(
+            select(self.model)
+            .where(
                 self.model.number == number,
                 self.model.date_flight >= date.today()
             )
+            .order_by(self.model.date_flight)
         )
         return db_flights.scalars().all()
 
@@ -56,7 +60,7 @@ class CRUDFlight(CRUDBase[Flight]):
                 self.model.date_flight == date_flight
             )
         )
-        return db_flight.scalars().first()
+        return db_flight.scalars().one_or_none()
 
     async def get_flight_by_parameters(
         self,

@@ -26,7 +26,7 @@ class City(Base):
         'Flight',
         secondary='flight_city',
         back_populates='cities',
-        lazy='joined'
+        lazy='selectin'
     )
 
     def __repr__(self):
@@ -45,7 +45,7 @@ class Flight(Base):
         'City',
         secondary='flight_city',
         back_populates='flights',
-        lazy='joined'
+        lazy='selectin'
     )
 
     def __repr__(self):

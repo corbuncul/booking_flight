@@ -30,7 +30,7 @@ class CRUDBase(Generic[T]):
         db_obj = await session.execute(
             select(self.model).where(self.model.id == obj_id)
         )
-        return db_obj.unique().scalars().first()
+        return db_obj.scalars().first()
 
     async def get_by_attribute(
             self,
@@ -43,7 +43,7 @@ class CRUDBase(Generic[T]):
         db_obj = await session.execute(
             select(self.model).where(attr == attr_value),
         )
-        return db_obj.unique().scalars().first()
+        return db_obj.scalars().first()
 
     async def find_one_or_none(
         self,
@@ -59,7 +59,7 @@ class CRUDBase(Generic[T]):
     async def get_all(self, session: AsyncSession) -> Sequence[T]:
         """Получение всех объектов."""
         db_objs = await session.execute(select(self.model))
-        return db_objs.unique().scalars().all()
+        return db_objs.scalars().all()
 
     async def create(
         self,

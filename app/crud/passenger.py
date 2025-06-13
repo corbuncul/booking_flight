@@ -3,7 +3,7 @@ from typing import Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import selectinload
 
 from app.crud import CRUDBase
 from app.models import Passenger
@@ -23,8 +23,8 @@ class CRUDPassenger(CRUDBase[Passenger]):
     ) -> Sequence[Passenger] | None:
         """Получение пассажиров по фамилии и имени."""
         query = select(self.model).options(
-                joinedload(self.model.tickets),
-                joinedload(self.model.tickets.flight),
+                selectinload(self.model.tickets),
+                selectinload(self.model.tickets.flight),
             )
         if surname is not None:
             query = query.where(self.model.surname == surname)
@@ -40,8 +40,8 @@ class CRUDPassenger(CRUDBase[Passenger]):
         db_passenger = await session.execute(
             select(self.model)
             .options(
-                joinedload(self.model.tickets),
-                joinedload(self.model.tickets.flight),
+                selectinload(self.model.tickets),
+                selectinload(self.model.tickets.flight),
             )
             .where(self.model.tickets.flight.date_flight == date_flight)
         )
