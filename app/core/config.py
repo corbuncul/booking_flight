@@ -19,6 +19,7 @@ class ConfigApp(ConfigBase):
     title: str = Field(default='Booking flight')
     description: str = Field(default='Запись на рейсы из п. Пертоминск')
     secret_key: SecretStr = Field(default='SECRET')
+    host: str = Field(default='localhost')
 
 
 class ConfigDB(ConfigBase):
@@ -26,6 +27,20 @@ class ConfigDB(ConfigBase):
 
     model_config = SettingsConfigDict(env_prefix='DB_')
     database_url: str = Field(default='sqlite+aiosqlite:///./fastapi.db')
+    name: str = Field(default='flight')
+    user: str = Field(default='pg_user')
+    password: SecretStr = Field(default='pg_password')
+    host: str = Field(default='localhost')
+    port: int = Field(default=5432)
+
+
+class ConfigRedis(ConfigBase):
+    """Настройки Redis."""
+
+    model_config = SettingsConfigDict(env_prefix='REDIS_')
+    host: str = Field(default='redis')
+    port: int = Field(default=6379)
+    db: int = Field(default=0)
 
 
 class ConfigBot(ConfigBase):
@@ -56,6 +71,7 @@ class Config(BaseSettings):
     """Все настройки приложения."""
 
     app: ConfigApp = Field(default_factory=ConfigApp)
+    redis: ConfigRedis = Field(default_factory=ConfigRedis)
     bot: ConfigBot = Field(default_factory=ConfigBot)
     db: ConfigDB = Field(default_factory=ConfigDB)
     superuser: ConfigSuperUser = Field(default_factory=ConfigSuperUser)
