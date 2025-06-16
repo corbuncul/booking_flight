@@ -19,6 +19,18 @@ from telegram.ext import (
 )
 
 from app.core.config import config
+from app.bot.utils import (
+    about_project,
+    get_obj_from_db,
+    create_objects_paginator,
+    find_cities_in_db,
+    find_flights_in_db,
+    free_text_reply,
+    get_obj_from_db,
+    greet_registred_user,
+    non_registred_reply,
+    under_development_reply,
+)
 
 SELECT, BOOKING, FLIGHT, CITY = range(4)
 
@@ -45,20 +57,11 @@ async def start_command(
     context: ContextTypes.DEFAULT_TYPE,
 ) -> int:
     """Отправка сообщения на команду /start."""
-    user = update.effective_user
     if update.callback_query:
         await update.callback_query.edit_message_reply_markup(None)
         await update.callback_query.answer()
-    if isinstance(user, User):
-        user_status = await get_user_status(tg_id=user.id)
-        is_user_registred = user_status.get('is_registered')
-        if is_user_registred:
-            await greet_registred_user(
-                update=update,
-                is_user_admin=user_status.get('is_admin'),
-                is_user_subscribed=user_status.get('is_subscribed'),
-            )
-            return SELECT
+        await greet_registred_user(update=update)
+        return SELECT
     await non_registred_reply(update=update)
     return 0
 
@@ -99,12 +102,39 @@ async def about_project_callback(
     await about_project(update)
 
 
+async def get_cities_from_db_callback(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    """Вывод списка городов."""
+    await find_cities_in_db(update=update)
+    return CITY
+
+
+async def get_flights_from_db_callback(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    """Вывод списка рейсов."""
+    await find_flights_in_db(update=update)
+    return FLIGHT
+
+
 async def free_text_handler(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ) -> None:
     """Заглушка для свободного текста."""
     await free_text_reply(update=update)
+
+
+async def booking_start_callback(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> int:
+    """Начало записи на рейс."""
+    await under_development_reply(update=update)
+    return SELECT
 
 
 cmd_start_handler = CommandHandler(
@@ -139,19 +169,19 @@ common_conversation_handler = ConversationHandler(
         BOOKING: [
             MessageHandler(
                 filters.TEXT & ~filters.COMMAND,
-                check_vacancy_text_callback,
+                booking_start_callback,
             ),
         ],
         FLIGHT: [
             MessageHandler(
                 filters.TEXT & ~filters.COMMAND,
-                find_colleagues_in_db_callback,
+                get_flights_from_db_callback,
             ),
         ],
         CITY: [
             MessageHandler(
                 filters.TEXT & ~filters.COMMAND,
-                find_colleagues_in_db_callback,
+                get_cities_from_db_callback,
             ),
         ]
     },

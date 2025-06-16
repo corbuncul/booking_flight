@@ -46,7 +46,7 @@ def get_inl_cities_buttons(cities: list[dict]) -> list:
         cities_buttons.append(
             InlineKeyboardButton(
                 text=f'{city["name"]} {city["code"]}',
-                callback_data=f"about_city_id_{city['city_id']}",
+                callback_data=f'about_city_id_{city["city_id"]}',
             ),
         )
     return cities_buttons
@@ -59,7 +59,7 @@ def get_inl_flights_buttons(flights: list[dict]) -> list:
         flights_buttons.append(
             InlineKeyboardButton(
                 text=f'{flight["number"]} {flight["date"]}',
-                callback_data=f"about_flight_id_{flight['flight_id']}",
+                callback_data=f'about_flight_id_{flight["flight_id"]}',
             ),
         )
     return flights_buttons
